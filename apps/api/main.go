@@ -1,9 +1,14 @@
 package main
 
 import (
-	"fmt"
+	sincapConfig "gitlab.com/sincap/sincap-common/config"
+	"gitlab.com/sincap/sincap-common/db"
 	"gitlab.com/sincap/sincap-common/flags"
 	"gitlab.com/sincap/sincap-common/logging"
+	"go.uber.org/zap"
+	"intern-api/apps/api/cmd/migrate"
+	"intern-api/apps/api/configs"
+	"intern-api/apps/api/server"
 	"os"
 )
 
@@ -22,5 +27,14 @@ func main() {
 	if fs.Lookup("config") == nil {
 		logging.Logger.Fatal("Config file not declared")
 	}
-	fmt.Println(Hello("api"))
+
+	command := fs.Lookup("command").Value.String()
+	if err := sincapConfig.Load(fs.Lookup("config").Value.String(), configs.Instance); err != nil {
+		logging.Logger.Fatal("App can not load configuration", zap.Error(err))
+	}
+	logging.Configure(configs.Instance.Log)
+	db.Configure(configs.Instance.DB)
+	migrate.AutoMigrate(command)
+
+	server.Run()
 }

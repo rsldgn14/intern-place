@@ -1,10 +1,20 @@
 {
+  "server": {
+    "domain": "localhost",
+    "port": 3000,
+    "securityHeaders": false,
+    "frontendURL": "http://localhost:3001",
+    "backendURL": "http://localhost:3000/api",
+    "app_name": "intern-api",
+    "server_header": "be1",
+    "body_limit": 10485760
+  },
 "db": [
 {
 "name": "default",
 "dialog": "mysql",
 "args": [
-"dbarg"
+  "internplace:intern@/internplace?charset=utf8mb4&parseTime=True"
 ],
 "logMode": true,
 "autoMigrate": [
@@ -13,5 +23,28 @@
 ],
 "allowGlobalUpdate": true
 }
-]
+],
+  "log": {
+    "level": "debug",
+    "development": true,
+    "encoding": "console",
+    "outputPaths": [
+      "stdout",
+      "/tmp/logs"
+    ],
+    "errorOutputPaths": [
+      "stderr"
+    ],
+    "encoderConfig": {
+      "messageKey": "msg",
+      "levelKey": "lvl",
+      "levelEncoder": "capitalColor",
+      "timeKey": "time",
+      "timeEncoder": "iso8601",
+      "nameKey": "name",
+      "callerKey": "caller",
+      "stacktraceKey": "stacktrace",
+      "durationEncoder": "string"
+    }
+  }
 }
