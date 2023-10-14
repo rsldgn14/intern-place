@@ -1,0 +1,17 @@
+{
+"db": [
+{
+"name": "default",
+"dialog": "mysql",
+"args": [
+"dbarg"
+],
+"logMode": true,
+"autoMigrate": [
+"init",
+"server"
+],
+"allowGlobalUpdate": true
+}
+]
+}
