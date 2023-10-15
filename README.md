@@ -65,7 +65,7 @@ Nx comes with local caching already built-in (check your `nx.json`). On CI you m
 
 
 ## !!Remember to set user password 'intern'.
-#### $ mysql
+##### $ mysql
 - CREATE USER 'internplace'@'localhost' IDENTIFIED BY 'intern';
 - FLUSH PRIVILEGES;
 - CREATE DATABASE bfapi;
