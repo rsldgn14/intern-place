@@ -2,6 +2,8 @@ package server
 
 import (
 	"github.com/gofiber/fiber/v2"
+	"gitlab.com/sincap/sincap-common/db"
+	"intern-api/apps/api/internal/sectors"
 )
 
 func AddRoutes(app *fiber.App) {
@@ -25,7 +27,8 @@ func publicRoutes(r fiber.Router) {
 }
 
 func adminRoutes(r fiber.Router) {
-	//admin := r.Group("/admin")
+	admin := r.Group("/admin")
+	sectors.SectorController(admin.Group("/sectors"), sectors.SectorService(sectors.SectorRepository(db.DB())))
 
 }
 
