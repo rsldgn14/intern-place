@@ -21,12 +21,19 @@ func SectorController(r fiber.Router, s Service) {
 		"UpdatedAt",
 		"DeletedAt",
 	), middlewares.ValidatorMap("body", Sector{}), res.update)
+
 }
 
 type controller struct {
 	service Service
 }
 
+
+// @Summary List sectors
+// @Description get sectors
+// @Tags sectors
+// @Accept  json
+// @Produce  json
 func (res *controller) list(ctx *fiber.Ctx) error {
 	q := ctx.Locals("qapi").(*qapi.Query)
 
