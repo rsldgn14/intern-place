@@ -86,13 +86,10 @@ export default function Form<R extends object>(props: Props<R>) {
     [form, props, router]
   );
 
-  const del = useCallback(() => {
-    props.onDelete?.();
-    router.back();
-  }, [props, router]);
-
   return (
-    <div style={{ maxWidth: '1000px', marginLeft: '25%', padding: '50px 2px' }}>
+    <div
+      style={{ maxWidth: '1000px', marginLeft: '320px', padding: '50px 2px' }}
+    >
       <Descriptions style={{ display: 'flex' }}>{descriptions}</Descriptions>
       <AForm
         form={form}
@@ -102,7 +99,7 @@ export default function Form<R extends object>(props: Props<R>) {
         {formItems}
         <div className={styles.actionButtons}>
           {props.onDelete && (
-            <Button onClick={del} danger type="primary">
+            <Button onClick={props.onDelete} danger type="primary">
               Delete
             </Button>
           )}

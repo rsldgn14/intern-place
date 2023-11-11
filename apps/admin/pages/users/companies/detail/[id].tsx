@@ -3,7 +3,7 @@ import { renderDateTime } from '../../../../utils/datetime';
 import { ColumnType } from '../../../../components/table/Table';
 import Form from '../../../../components/form/Form';
 import { useCallback } from 'react';
-
+import { BookOutlined } from '@ant-design/icons';
 interface Props {
   company: Company;
 }
@@ -45,11 +45,14 @@ const columns: ColumnType<Company>[] = [
     description: true,
 
     render: (value: Sector[]) => (
-      <ul>
+      <div>
         {value.map((v) => (
-          <li key={v.Name}> {v.Name} </li>
+          <div key={v.Name}>
+            {' '}
+            <BookOutlined /> {v.Name}{' '}
+          </div>
         ))}
-      </ul>
+      </div>
     ),
   },
 ];

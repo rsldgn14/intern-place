@@ -3,7 +3,8 @@ import Form from '../../../components/form/Form';
 import { ColumnType } from '../../../components/table/Table';
 import { get, Sector, Sectors } from '@intern-place/types';
 import { useCallback } from 'react';
-
+import { Modal } from 'antd';
+import { useRouter } from 'next/router';
 interface Props {
   sector: Sector;
 }
@@ -40,17 +41,36 @@ export default function Index(props: Props) {
     [props.sector.ID]
   );
 
-  const onDelete = useCallback(() => {
-    Sectors.del(props.sector.ID).catch((err) => console.error(err));
-  }, [props.sector.ID]);
+  const [modal, contextHolder] = Modal.useModal();
+
+  const router = useRouter();
+
+  const onDelete = useCallback(async () => {
+    modal.confirm({
+      onOk: async () => {
+        await Sectors.del(props.sector.ID).catch((err) => console.error(err));
+        router.back();
+      },
+      title: 'Are you sure about delete sector.',
+      content: 'This process can not be undone.',
+      okText: 'Yes',
+      cancelText: 'No',
+      okButtonProps: {
+        danger: true,
+      },
+    });
+  }, [modal, props.sector.ID, router]);
 
   return (
-    <Form
-      initialValues={props.sector}
-      items={columns}
-      onSubmit={onSubmit}
-      onDelete={onDelete}
-    />
+    <>
+      <Form
+        initialValues={props.sector}
+        items={columns}
+        onSubmit={onSubmit}
+        onDelete={onDelete}
+      />
+      {contextHolder}
+    </>
   );
 }
 
