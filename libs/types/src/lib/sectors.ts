@@ -36,7 +36,6 @@ export async function create(value:Partial<Sector>) {
 
 
 export async  function update(id:string | number,value:Sector) {
-  console.log(JSON.stringify(value))
     return await request<Sector>(`admin/sectors/${id}`,
     {method: "POST", 
     body: JSON.stringify(value)})
@@ -44,7 +43,15 @@ export async  function update(id:string | number,value:Sector) {
 }
 
 
+export async function del(id:number |string) {
+  return await request<never>(`admin/sectors/${id}`,{
+    method:"DELETE"
+
+  })
+}
+
+
 export const Sectors =  {
-    get,getAll,update,create
+    get,getAll,update,create,del
 
 }

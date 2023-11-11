@@ -17,6 +17,13 @@
   color:black;
 }
 
+.actionButtons {
+  display: flex;
+  gap:25px;
+  justify-content: end;
+
+}
+
 .descriptionContent{
   padding-left:10px;
 }

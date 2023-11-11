@@ -15,6 +15,7 @@ import DateInput from '../inputs/DateInput';
 interface Props<R extends object> extends FormProps {
   items: ColumnType<R>[];
   onSubmit?: (values: Record<string, unknown>) => void;
+  onDelete?: () => void;
 }
 
 export default function Form<R extends object>(props: Props<R>) {
@@ -35,7 +36,7 @@ export default function Form<R extends object>(props: Props<R>) {
         {decideInputType(item.type)}
       </AForm.Item>
     ));
-  console.log(formItems);
+
   const descriptions = props.items
     .filter((i) => i.description)
     .map((item, i) => {
@@ -85,6 +86,11 @@ export default function Form<R extends object>(props: Props<R>) {
     [form, props, router]
   );
 
+  const del = useCallback(() => {
+    props.onDelete?.();
+    router.back();
+  }, [props, router]);
+
   return (
     <div style={{ maxWidth: '1000px', marginLeft: '25%', padding: '50px 2px' }}>
       <Descriptions style={{ display: 'flex' }}>{descriptions}</Descriptions>
@@ -94,12 +100,18 @@ export default function Form<R extends object>(props: Props<R>) {
         initialValues={props.initialValues}
       >
         {formItems}
-
-        {props.onSubmit && (
-          <Button onClick={onSave} type={'primary'}>
-            Save
-          </Button>
-        )}
+        <div className={styles.actionButtons}>
+          {props.onDelete && (
+            <Button onClick={del} danger type="primary">
+              Delete
+            </Button>
+          )}
+          {props.onSubmit && (
+            <Button onClick={onSave} type={'primary'}>
+              Save
+            </Button>
+          )}
+        </div>
       </AForm>
     </div>
   );

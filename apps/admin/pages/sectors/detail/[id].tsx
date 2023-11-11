@@ -40,8 +40,17 @@ export default function Index(props: Props) {
     [props.sector.ID]
   );
 
+  const onDelete = useCallback(() => {
+    Sectors.del(props.sector.ID).catch((err) => console.error(err));
+  }, [props.sector.ID]);
+
   return (
-    <Form initialValues={props.sector} items={columns} onSubmit={onSubmit} />
+    <Form
+      initialValues={props.sector}
+      items={columns}
+      onSubmit={onSubmit}
+      onDelete={onDelete}
+    />
   );
 }
 
