@@ -1,4 +1,16 @@
 {
+  "auth": {
+    "secret": "dsakjhdkashdjkashdkjashdkjasdhkjash",
+    "domain": "localhost",
+    "timeout": 86400,
+    "httpOnly": false,
+    "secure": false,
+    "ownershipBypassIPs": [
+      "127.*.*.*"
+    ],
+    "ipCheck": true,
+    "deviceIDCheck": true
+  },
   "server": {
     "domain": "localhost",
     "port": 3000,

@@ -1,9 +1,10 @@
 module intern-api
 
-go 1.21.3
+go 1.23
 
 require (
 	github.com/gofiber/fiber/v2 v2.49.2
+	github.com/gofiber/jwt/v2 v2.2.7
 	gitlab.com/sincap/sincap-common v1.0.6-0.20230417134413-ee7086f4ef0e
 	go.uber.org/zap v1.26.0
 	gorm.io/gorm v1.25.5
