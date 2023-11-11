@@ -1,9 +1,11 @@
 package students
 
 import (
-	"gorm.io/gorm"
 	"intern-api/apps/api/internal/sectors"
+	"intern-api/apps/api/internal/users"
 	"time"
+
+	"gorm.io/gorm"
 )
 
 type Student struct {
@@ -14,4 +16,5 @@ type Student struct {
 	University string
 	Grade      uint
 	Experience string
+	User       *users.User `gorm:"foreignKey:UserID"`
 }

@@ -12,7 +12,7 @@ type repository struct {
 	repositories.GormRepository[Company]
 }
 
-func StudentRepository(db *gorm.DB) Repository {
+func CompanyRepository(db *gorm.DB) Repository {
 
 	return &repository{repositories.NewGormRepository[Company](db)}
 

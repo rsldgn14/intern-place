@@ -11,6 +11,9 @@ body {
   font-family: inherit;
   line-height: inherit;
   margin: 0;
+  height: 100vh;
+  width: 100%;
+  background-color: rgb(226,195,220,0.20);
 }
 h1,
 h2,

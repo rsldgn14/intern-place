@@ -1,15 +1,17 @@
 package migrate
 
 import (
-	"gitlab.com/sincap/sincap-common/db"
-	"gitlab.com/sincap/sincap-common/db/util"
 	"intern-api/apps/api/configs"
 	"intern-api/apps/api/internal/applications"
 	"intern-api/apps/api/internal/companies"
 	"intern-api/apps/api/internal/notices"
+	"intern-api/apps/api/internal/roles"
 	"intern-api/apps/api/internal/sectors"
 	"intern-api/apps/api/internal/students"
 	"intern-api/apps/api/internal/users"
+
+	"gitlab.com/sincap/sincap-common/db"
+	"gitlab.com/sincap/sincap-common/db/util"
 )
 
 func AutoMigrate(command string) {
@@ -23,4 +25,5 @@ var models = []interface{}{
 	&notices.Notice{},
 	&sectors.Sector{},
 	&students.Student{},
+	&roles.Role{},
 }

@@ -1,11 +1,12 @@
 package sectors
 
 import (
+	"net/http"
+	"strconv"
+
 	"github.com/gofiber/fiber/v2"
 	"gitlab.com/sincap/sincap-common/middlewares"
 	"gitlab.com/sincap/sincap-common/middlewares/qapi"
-	"net/http"
-	"strconv"
 )
 
 func SectorController(r fiber.Router, s Service) {
@@ -16,9 +17,8 @@ func SectorController(r fiber.Router, s Service) {
 	r.Put("/delMulti", middlewares.BodyParser[[]uint]("body"), res.deleteMulti)
 	r.Get("/:sid", res.read)
 	r.Delete("/:sid", res.delete)
-	r.Patch("/:sid", middlewares.BodyParserMap("body",
+	r.Post("/:sid", middlewares.BodyParserMap("body",
 		"ID", "CreatedAt",
-		"UpdatedAt",
 		"DeletedAt",
 	), middlewares.ValidatorMap("body", Sector{}), res.update)
 }
