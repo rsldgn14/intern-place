@@ -26,7 +26,7 @@
 "name": "default",
 "dialog": "mysql",
 "args": [
-  "internplace:intern@/internplace?charset=utf8mb4&parseTime=True"
+  "internplace:intern@/bfapi?charset=utf8mb4&parseTime=True"
 ],
 "logMode": true,
 "autoMigrate": [
@@ -41,8 +41,8 @@
     "development": true,
     "encoding": "console",
     "outputPaths": [
-      "stdout",
-      "/tmp/logs"
+      "stdout"
+      
     ],
     "errorOutputPaths": [
       "stderr"

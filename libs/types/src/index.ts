@@ -8,3 +8,5 @@ export * as Users from './lib/users'
 export * as Notices from './lib/notices'
 
 export * as Applications from './lib/applications'
+
+export * as MockData from './lib/mockdata'
