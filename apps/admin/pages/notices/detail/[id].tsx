@@ -41,13 +41,13 @@ const columns: ColumnType<Notices.Notice>[] = [
     title: 'Company',
     key: 'Company',
     description: true,
-    render: (value: Company) => value.Name,
+    render: (value: Company) => value?.Name,
   },
   {
     title: 'Sector',
     key: 'Sector',
     description: true,
-    render: (value: Sector) => value.Name,
+    render: (value: Sector) => value?.Name,
   },
   {
     title: 'Start Time',

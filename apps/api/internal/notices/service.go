@@ -23,7 +23,7 @@ func NoticeService(r Repository) Service {
 func (s service) ReadNoticeWithPreloads(id uint) (*Notice, error) {
 	var student Notice
 
-	if err := s.repository.Read(&student, id, "Sector", "Company"); err != nil {
+	if err := s.repository.Read(&student, id, "Sector", "Company.Sector", "Company"); err != nil {
 		return nil, err
 	}
 

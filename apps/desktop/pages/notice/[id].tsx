@@ -1,23 +1,16 @@
-import { MockData, Notices } from "@intern-place/types"
+import { NoticeDetailContainer } from "@intern-place/components"
+import {  Notices } from "@intern-place/types"
 import { GetServerSideProps } from "next"
-import { parse } from "path"
+
 
 interface Props {
-    notice: any
-
-
+    notice: Notices.Notice | null 
 }
 
 
 export default function Index(props:Props) {
 
-return (<div> 
-    <div>Notice {props.notice?.ID}</div> 
-    <div>{props.notice?.Title}</div>
-    <div>{props.notice?.Description}</div>
-    
-</div>)
-
+return <NoticeDetailContainer notice={props.notice}/>
 
 
  }
@@ -27,9 +20,9 @@ return (<div>
  export const getServerSideProps: GetServerSideProps = async (context) => {
     const id = context.params?.id
 
-    const notice = MockData.mockNotice.find((notice) => notice.ID  === parseInt(id as string))
+    const notice = await Notices.get(id as string)
 
-    console.log(notice)
+  
   
     return {
       props: {

@@ -1,10 +1,9 @@
 import { css } from "@emotion/react";
+import { Company, Notices } from "@intern-place/types";
 
 interface Props {
-    name:string;
-    imgSrc:string;
-    createdDate:string;
-    endTime:string;
+    notice:Notices.Notice;
+    index:number;
 }
 
 
@@ -13,10 +12,10 @@ export default function CardOwner(props:Props) {
 
     return <div css={cardOwnerContainerCss}>
         <div css={leftCss}> 
-        <img css={cardOwnerImgCss} src={props.imgSrc} alt="user-info"/>
+        <img css={cardOwnerImgCss} src={`https://picsum.photos/200/${props.index + 100}`} alt="user-info"/>
         <div css={cardOwnerInfoCss}> 
-        <span css={cardOwnerTitle}>{props.name}</span>
-        <span>{props.createdDate}</span>
+        <span css={cardOwnerTitle}>{props.notice.Company.Name}</span>
+        <span>{props.notice.CreatedTime}</span>
         </div>
         </div>
 
