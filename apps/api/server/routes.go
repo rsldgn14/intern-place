@@ -31,6 +31,7 @@ func publicRoutes(r fiber.Router) {
 	public := r.Group("/public")
 
 	notices.NoticePublicController(public.Group("/notices"), notices.NoticeService(notices.NoticeRepository(db.DB())))
+	sectors.SectorPublicControler(public.Group("/sectors"), sectors.SectorService(sectors.SectorRepository(db.DB())))
 }
 
 func adminRoutes(r fiber.Router) {

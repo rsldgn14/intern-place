@@ -50,8 +50,14 @@ export async function del(id:number |string) {
   })
 }
 
+export async function publicGetAllSectors() {
+  return await request<Sector[]>(`public/sectors`,{
+    method:"GET"
+  })
+}
+
 
 export const Sectors =  {
-    get,getAll,update,create,del
+    get,getAll,update,create,del,publicGetAllSectors
 
 }

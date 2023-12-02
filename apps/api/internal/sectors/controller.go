@@ -23,6 +23,13 @@ func SectorController(r fiber.Router, s Service) {
 	), middlewares.ValidatorMap("body", Sector{}), res.update)
 }
 
+func SectorPublicControler(r fiber.Router, s Service) {
+	res := controller{s}
+	r.Get("/", middlewares.QApi, res.list)
+	r.Get("/:sid", res.read)
+
+}
+
 type controller struct {
 	service Service
 }
