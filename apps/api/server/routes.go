@@ -28,7 +28,9 @@ func authenticatedRoutes(r fiber.Router) {
 }
 
 func publicRoutes(r fiber.Router) {
+	public := r.Group("/public")
 
+	notices.NoticePublicController(public.Group("/notices"), notices.NoticeService(notices.NoticeRepository(db.DB())))
 }
 
 func adminRoutes(r fiber.Router) {

@@ -1,3 +1,4 @@
+import { QApis } from "..";
 import { Company } from "./companies";
 import { request } from "./fetch"
 import { Sector } from "./sectors";
@@ -5,16 +6,17 @@ import { Sector } from "./sectors";
 
 export interface Notice {
     ID:number;
-    CreatedTime:string;
-    UpdatedTime:string;
+    CreatedAt:string;
+    UpdatedAt:string;
     Title:string;
     Description:string;
-    Compnay:Company;
+    Company:Company;
     Sector:Sector;
     StartTime:string;
     EndTime:string;
     InternCount:number;
     Active:boolean;
+    
 
 }
 
@@ -41,12 +43,18 @@ export async function getAll() {
  
  
  export async  function update(id:string | number,value:Notice) {
-   console.log(JSON.stringify(value))
      return await request<Notice>(`admin/notices/${id}`,
      {method: "POST", 
      body: JSON.stringify(value)})
  
  }
 
+
+
+ export async  function publicList(qapi?:QApis.QApi) {
+  return await request<Notice[]>(`public/notices${QApis.toQueryParam(qapi)}`,{
+    method:"GET"
+  })
+ }
 
 

@@ -2,34 +2,35 @@ import { css } from "@emotion/react"
 import SectorInfo from "./SectorInfo";
 import CardOwner from "./CardOwner";
 import NoticeReminder from "./NoticeReminder";
+import { Notices } from "@intern-place/types";
+import { useRouter } from "next/router";
 
 interface Props {
-    ID:number;
-    Title:string;
-    Description:string;
-    Image:string;
-    Company:string;
-    Sector:{title:string,color:string};
-    CompanyImage:string;
-    CreatedTime:string;
-    EndTime:string;
-    isEnding?:boolean
-
+    notice:Notices.Notice
+    index:number;
 }
 
 export default function NoticeCard(props:Props) { 
-    return <div css={noticeCardContainer}>
-            <img css={imgCss} src={props.Image} alt="" />
+    const router = useRouter()
+
+
+    return <div css={noticeCardContainer} >
+            <img css={imgCss} src={`https://picsum.photos/id/${props.index + 50}/200/300`} alt="" />
             <div css={noticeCardContentCss}> 
-            <div css={middleCss}> 
-            <SectorInfo title={props.Sector.title} color={props.Sector.color}/>
-            {props.isEnding && <NoticeReminder/>}
+                  <div css={middleCss}> 
+                 <SectorInfo title={props.notice.Sector?.Name} directLink = {`sectors/${props.notice.Sector.ID}`} color="yellow"/>
+                 {
+                  //TO-DO implement notice reminder for is endig function 
+                //props.notice.isEnding && <NoticeReminder/>
+                 }
             </div>
-            
-            <span css={sectorTitleCss}>{props.Title}</span>
-            <span css={descriptionCss}>{props.Description}</span>
+            <div css={cursor} onClick={() => router.push(`/notice/${props.notice.ID}`) }> 
+            <span css={sectorTitleCss}>{props.notice.Title}</span>
+            <span css={descriptionCss}> <div dangerouslySetInnerHTML={{ __html: props.notice.Description }} /></span>
             </div>
-            <CardOwner name={props.Company} imgSrc={props.CompanyImage} createdDate={props.CreatedTime} endTime={props.EndTime}/>
+
+            </div>
+            <CardOwner index={props.index} notice={props.notice}/>
 
         </div>
 
@@ -43,6 +44,7 @@ const noticeCardContainer = css`
     height:420px;
     border-radius: 10px;
     background : linear-gradient(rgba(254,141,198,0.6),rgba(254,209,199,0.6));
+
 
 `
 
@@ -59,6 +61,7 @@ const noticeCardContentCss = css`
     flex-direction: column;
     gap: 10px;
     margin:10px 0;
+    min-height: 186px;
     
 `
 
@@ -82,3 +85,7 @@ const middleCss = css`
     justify-content: space-between;
 
 `
+
+
+const cursor = css`
+    cursor: pointer;`

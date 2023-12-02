@@ -1,15 +1,28 @@
 import { css } from "@emotion/react";
+import { useRouter } from "next/router";
+import { useCallback } from "react";
 
 interface Props {
     title:string;
     color:string;
+    directLink:string;
 
 }
 
 
 
 export default function SectorInfo(props:Props) {
-    return <div css={sectorInfoCss(props.color)}> {props.title} </div>
+    const router = useRouter()
+
+
+    const onClick = useCallback((path:string) => {
+        router.push(path)
+
+     }, [router])
+
+
+
+    return <div onClick={() => onClick(props.directLink)}  css={sectorInfoCss(props.color)}> {props.title} </div>
 }
 
 
@@ -20,5 +33,5 @@ const sectorInfoCss = (color:string) => css`
     border-radius: 10px;
     background-color: ${color};
     font-size: 14px;
+    cursor: pointer;
 `
-

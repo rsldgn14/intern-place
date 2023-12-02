@@ -20,6 +20,19 @@ func NoticeAdminController(r fiber.Router, s Service) {
 	r.Post("/:nid", middlewares.BodyParserMap("body"), middlewares.ValidatorMap("body", Notice{}), res.update)
 }
 
+//TO-DO: Add NoticeStudentController for apply notice
+// func NoticeStudentController(r fiber.Router, s Service) {
+// 	res := controller{s}
+// 	r.Get("/", middlewares.QApi, res.list)
+// 	r.Get("/:nid", res.read)
+// }
+
+func NoticePublicController(r fiber.Router, s Service) {
+	res := controller{s}
+	r.Get("/", middlewares.QApi, res.list)
+	r.Get("/:nid", res.read)
+}
+
 func (res *controller) list(ctx *fiber.Ctx) error {
 	q := ctx.Locals("qapi").(*qapi.Query)
 

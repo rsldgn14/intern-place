@@ -1,24 +1,27 @@
 import { css } from '@emotion/react'
-import {NoticeCard} from '@intern-place/components'
-import {MockData} from '@intern-place/types'
+import { NoticeCard } from '@intern-place/components'
+import { Notices, Sector, Sectors} from '@intern-place/types'
+import { GetServerSideProps } from 'next'
+import Link from 'next/link'
 
-export default function CardComponentTest() {
-return  <div css={noticeCardsCss}> 
-        {MockData.mockNotice.map((notice) => 
+interface Props {
+        notices:Notices.Notice[]
+        sectors: Sector[]
+
+}
+
+
+export default function CardComponentTest(props:Props) {
+return  (<>{props.sectors.map(sector => <Link key={sector.ID} href={`sectors/${sector.ID}`}>{sector.Name}</Link>)}
+<div css={noticeCardsCss}> 
+        {props.notices.map((notice) => 
         <NoticeCard 
-        key={notice.ID} 
-        ID={notice.ID}  
-        Title={notice.Title} 
-        Description={notice.Description} 
-        Image={notice.Image} 
-        Sector={notice.Sector}
-        Company={notice.Company}
-        CompanyImage={notice.CompanyImage}
-        CreatedTime={notice.CreatedTime}
-        EndTime={notice.EndTime}
-        isEnding={notice.isEnding}
+        key={notice.ID}
+        notice={notice}
+        index={notice.ID}
         />) }
 </div>
+</>)
    
  }
 
@@ -30,3 +33,23 @@ return  <div css={noticeCardsCss}>
     margin-top: 20px;
     margin-bottom: 20px;
  `
+
+ export const getServerSideProps: GetServerSideProps = async (context) => {
+
+    
+       const notices = await Notices.publicList(
+       
+       )
+       const sectors = await Sectors.getAll(
+
+       )
+    
+        console.log("Notice",notices)
+      
+        return {
+          props: {
+                notices:notices || null,
+                sectors:sectors || null,
+          },
+        }
+      }
