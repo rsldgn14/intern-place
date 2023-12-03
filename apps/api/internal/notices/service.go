@@ -5,6 +5,7 @@ import "gitlab.com/sincap/sincap-common/services"
 type Service interface {
 	services.Service[Notice]
 	ReadNoticeWithPreloads(id uint) (*Notice, error)
+	IncreaseViewCount(noticeID uint) error
 }
 
 type service struct {
@@ -29,4 +30,13 @@ func (s service) ReadNoticeWithPreloads(id uint) (*Notice, error) {
 
 	return &student, nil
 
+}
+
+
+func (s service) IncreaseViewCount(noticeID uint) error {
+	if err :=  s.repository.IncreaseViewCount(noticeID); err != nil {
+		return err
+	}
+
+	return nil
 }

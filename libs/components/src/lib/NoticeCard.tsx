@@ -4,6 +4,7 @@ import CardOwner from './CardOwner';
 import NoticeReminder from './NoticeReminder';
 import { Notices } from '@intern-place/types';
 import { useRouter } from 'next/router';
+import { useCallback } from 'react';
 
 interface Props {
   notice: Notices.Notice;
@@ -12,6 +13,11 @@ interface Props {
 
 export default function NoticeCard(props: Props) {
   const router = useRouter();
+
+  const onClickNotice = useCallback(() => {
+    router.push(`/notice/${props.notice.ID}`);
+    Notices.publicIncreaseView(props.notice.ID);
+  }, [props.notice.ID, router]);
 
   return (
     <div css={noticeCardContainer}>
@@ -35,10 +41,7 @@ export default function NoticeCard(props: Props) {
             //props.notice.isEnding && <NoticeReminder/>
           }
         </div>
-        <div
-          css={cursor}
-          onClick={() => router.push(`/notice/${props.notice.ID}`)}
-        >
+        <div css={cursor} onClick={onClickNotice}>
           <span css={sectorTitleCss}>{props.notice.Title}</span>
           <span css={descriptionCss}>
             {' '}

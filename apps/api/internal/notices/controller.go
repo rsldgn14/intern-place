@@ -31,6 +31,7 @@ func NoticePublicController(r fiber.Router, s Service) {
 	res := controller{s}
 	r.Get("/", middlewares.QApi, res.list)
 	r.Get("/:nid", res.read)
+	r.Patch("/:nid/increase-view-count", res.increaseViewCount)
 }
 
 func (res *controller) list(ctx *fiber.Ctx) error {
@@ -78,4 +79,22 @@ func (res *controller) update(ctx *fiber.Ctx) error {
 	}
 
 	return ctx.SendStatus(fiber.StatusNoContent)
+}
+
+
+func (res *controller) increaseViewCount(ctx *fiber.Ctx) error { 
+	stid, err := ctx.ParamsInt("nid")
+
+	if err != nil {
+
+		return err
+	}
+
+	if err := res.service.IncreaseViewCount(uint(stid)); err != nil {
+		return err
+	}
+
+	return ctx.SendStatus(fiber.StatusNoContent)
+
+
 }
