@@ -4,12 +4,24 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
 import useClickOutside from '../hooks/useClickOutside';
+import Modal from '../Modal';
+import Input from '../inputs/Input';
+import LoginModal from './LoginModal';
 
 export default function Header() {
   const [sectors, setSectors] = useState<Sector[]>([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
 
   const router = useRouter();
+
+  const onCloseLoginModal = useCallback(() => {
+    setIsLoginModalOpen(false);
+  }, []);
+
+  const openLoginModal = useCallback(() => {
+    setIsLoginModalOpen(true);
+  }, []);
 
   const onClickSectorMenu = useCallback(() => {
     setIsDropdownOpen((prev) => !prev);
@@ -28,62 +40,65 @@ export default function Header() {
   }, []);
 
   return (
-    <div css={headercss}>
-      <Image
-        css={imageCss}
-        onClick={() => router.push('/')}
-        src="/logo.png"
-        alt="logo"
-        width={120}
-        height={40}
-      />
-      <div css={menuCss}>
-        <div css={selectedCss} onClick={() => router.push('/')}>
-          {' '}
-          Anasayfa
+    <>
+      <div css={headercss}>
+        <Image
+          css={imageCss}
+          onClick={() => router.push('/')}
+          src="/logo.png"
+          alt="logo"
+          width={120}
+          height={40}
+        />
+        <div css={menuCss}>
+          <div css={selectedCss} onClick={() => router.push('/')}>
+            {' '}
+            Anasayfa
+          </div>
+          <div ref={ref} css={[dropdownParent]}>
+            <span
+              css={[selectedCss, dropdownArrowCss]}
+              onClick={onClickSectorMenu}
+            >
+              <Image
+                src={!isDropdownOpen ? '/down-arrow.svg' : '/up-arrow.svg'}
+                height={20}
+                width={15}
+                alt="vector"
+              />
+              Sektörler
+            </span>
+            {isDropdownOpen && (
+              <div css={dropdownCss}>
+                {sectors.map((sector) => {
+                  return (
+                    <div
+                      key={sector.ID}
+                      css={sectorCss}
+                      onClick={() => {
+                        router.push(`/sectors/${sector.ID}`);
+                        setIsDropdownOpen(false);
+                      }}
+                    >
+                      {sector.Name}
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+          <div css={selectedCss} onClick={() => router.push('/notice')}>
+            {' '}
+            Tüm İlanlar{' '}
+          </div>
         </div>
-        <div ref={ref} css={[dropdownParent]}>
-          <span
-            css={[selectedCss, dropdownArrowCss]}
-            onClick={onClickSectorMenu}
-          >
-            <Image
-              src={!isDropdownOpen ? '/down-arrow.svg' : '/up-arrow.svg'}
-              height={20}
-              width={15}
-              alt="vector"
-            />
-            Sektörler
-          </span>
-          {isDropdownOpen && (
-            <div css={dropdownCss}>
-              {sectors.map((sector) => {
-                return (
-                  <div
-                    key={sector.ID}
-                    css={sectorCss}
-                    onClick={() => {
-                      router.push(`/sectors/${sector.ID}`);
-                      setIsDropdownOpen(false);
-                    }}
-                  >
-                    {sector.Name}
-                  </div>
-                );
-              })}
-            </div>
-          )}
-        </div>
-        <div css={selectedCss} onClick={() => router.push('/notice')}>
-          {' '}
-          Tüm İlanlar{' '}
+        <div css={menuCss}>
+          <div onClick={openLoginModal}> Giriş Yap </div>
+          <div> Kayıt Ol </div>
         </div>
       </div>
-      <div css={menuCss}>
-        <div> Giriş Yap </div>
-        <div> Kayıt Ol </div>
-      </div>
-    </div>
+      <LoginModal show={isLoginModalOpen} onClose={onCloseLoginModal} />
+    </>
   );
 }
 

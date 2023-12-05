@@ -3,8 +3,8 @@ import Header from './lib/header/Header';
 import NoticeDetailContainer from './lib/layout/Notice/NoticeDetailCotainer';
 import SectorNoticeSections from './lib/notice/SectorNoticeSections';
 import Input from './lib/inputs/Input';
-import useClickOutside from "./lib/hooks/useClickOutside";
-
+import useClickOutside from './lib/hooks/useClickOutside';
+import HighlightedNotices from './lib/HighlightedNotices';
 
 export * from './lib/components';
 
@@ -18,5 +18,6 @@ export { SectorNoticeSections };
 
 export { Input };
 
+export { useClickOutside };
 
-export {useClickOutside}
+export { HighlightedNotices };

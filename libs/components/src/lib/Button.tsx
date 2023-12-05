@@ -4,8 +4,10 @@ const buttonStyles = css`
   display: inline-block;
   padding: 10px 20px;
   font-size: 16px;
-  border-radius: 20px;
+  border-radius: 15px;
   cursor: pointer;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4);
+  transition: box-shadow 0.3s ease-in-out;
 `;
 
 const primaryStyles = css`
@@ -15,7 +17,7 @@ const primaryStyles = css`
 
 const secondaryStyles = css`
   background-color: #ffffff;
-  color: #d3bed3;
+  color: black;
   border: 1px solid #d3bed3;
 `;
 
