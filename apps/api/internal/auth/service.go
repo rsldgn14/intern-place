@@ -10,9 +10,7 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"gitlab.com/sincap/sincap-common/auth/claims"
-	"gitlab.com/sincap/sincap-common/logging"
 	"gitlab.com/sincap/sincap-common/services"
-	"go.uber.org/zap"
 )
 
 type Service interface {
@@ -32,7 +30,7 @@ func (ser *service) Login(ctx context.Context, req *LoginReq, userAgent, ip stri
 	password := req.Password
 	u, err := ser.usersRepo.FindByUsername(req.Username)
 	if err != nil {
-		return nil, nil, services.NewError(401, "Wrong email or password")
+		return nil, nil, services.NewError(401, "Yanlış email veya şifre")
 	}
 
 	tx, err := ser.usersRepo.BeginTx(ctx)
@@ -41,13 +39,8 @@ func (ser *service) Login(ctx context.Context, req *LoginReq, userAgent, ip stri
 	}
 
 	if u.Password != password {
-		return nil, nil, services.NewError(401, "Wrong email or password")
+		return nil, nil, services.NewError(401, "Yanlış email veya şifre")
 
-	}
-	if err := tx.Update(u); err != nil {
-		logging.Logger.Warn("Can't update success login user", zap.String("username", u.UserName))
-		tx.RollbackTx()
-		return nil, nil, services.NewError(500, err)
 	}
 
 	// create claims extras
