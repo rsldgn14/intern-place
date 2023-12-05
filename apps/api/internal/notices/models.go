@@ -21,4 +21,5 @@ type Notice struct {
 	EndTime     *time.Time
 	InternCount int  `validate:"required"`
 	Active      bool `gorm:"default:false"`
+	ViewCount   uint  `gorm:"default:0"`
 }

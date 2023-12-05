@@ -11,7 +11,7 @@ export default function NoticeCompanyArea(props: Props) {
       <div>
         <img
           css={companyPhotoCss}
-          src="https://picsum.photos/id/237/200/300"
+          src={`https://picsum.photos/id/${props.company?.ID ? props.company?.ID + 400 : 0 }/200/300`}
           alt="foto"
         />
       </div>
