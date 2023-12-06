@@ -1,53 +1,58 @@
-import { Company } from "./companies";
-import { request } from "./fetch";
-import { Notice } from "./notices";
-import { Student } from "./students";
-
+import { Company } from './companies';
+import { request } from './fetch';
+import { Notice } from './notices';
+import { Student } from './students';
 
 export interface Application {
-        ID: number;
-        CreatedAt:string;
-        UpdatedAt:string;
-        Notice:Notice;
-        Student:Student;
-        Company:Company;
-        Status:number;
-    }   
-
-
+  ID: number;
+  CreatedAt: string;
+  UpdatedAt: string;
+  Notice?: Notice;
+  NoticeID: number;
+  StudentID: number;
+  CompanyID: number;
+  Student?: Student;
+  Company?: Company;
+  Status: number;
+}
 
 export enum Status {
-    Waiting = +1,
-    Rejected,
-    Approved
-
+  Waiting = +1,
+  Rejected,
+  Approved,
 }
-
 
 export const StatusInfo = [
-    {ID:Status.Waiting,Name:"Waiting"},
-    {ID:Status.Rejected,Name:"Rejected"},
-    {ID:Status.Approved,Name:"Approved"}
-]
+  { ID: Status.Waiting, Name: 'Waiting' },
+  { ID: Status.Rejected, Name: 'Rejected' },
+  { ID: Status.Approved, Name: 'Approved' },
+];
 
-export function getStatus(id:Status) {
-    return StatusInfo.find(si => si.ID === id)
+export enum ApplicationStatus {
+  WAITING = +1,
+  REJECTED,
+  APPROVED,
 }
 
-
+export function getStatus(id: Status) {
+  return StatusInfo.find((si) => si.ID === id);
+}
 
 export async function getAll() {
-    return await request<Application[]>("admin/applications",
-    {
-     method:"GET"
-    })
- 
- }
- 
- export async function get(id: string | number) {
- 
-   return await request<Application>(`admin/applications/${id}`,{
-     method:"GET"
-   })
- 
- }
+  return await request<Application[]>('admin/applications', {
+    method: 'GET',
+  });
+}
+
+export async function get(id: string | number) {
+  return await request<Application>(`admin/applications/${id}`, {
+    method: 'GET',
+  });
+}
+
+export async function create(body: Partial<Application>) {
+  return await request<Application>('students/applications', {
+    method: 'POST',
+    body: JSON.stringify(body),
+  });
+}

@@ -15,7 +15,6 @@ type Repository interface {
 	BeginTx(ctx context.Context) (Repository, error)
 	RollbackTx() error
 	CommitTx() error
-	IsActive(id uint) bool
 	IsUserExist(email string) bool
 }
 
@@ -23,13 +22,13 @@ type repository struct {
 	repositories.GormRepository[users.User]
 }
 
-func NewRepository(db *gorm.DB) Repository {
+func AuthRepository(db *gorm.DB) Repository {
 	return &repository{repositories.NewGormRepository[users.User](db)}
 }
 
 func (rep *repository) BeginTx(ctx context.Context) (Repository, error) {
 	var tx = rep.DB.WithContext(ctx).Begin()
-	repTx := NewRepository(tx)
+	repTx := AuthRepository(tx)
 	return repTx, tx.Error
 }
 
@@ -40,14 +39,6 @@ func (rep *repository) CommitTx() error {
 	return rep.DB.Commit().Error
 }
 
-func (rep *repository) IsActive(id uint) bool {
-	var user int64
-	if res := rep.DB.Table("User").Where("ID=? AND IsActive=?", id, true).Count(&user); res.Error != nil {
-		logging.Logger.Error("Read error", zap.Any("Model", "User"), zap.Error(res.Error), zap.Uint("id", id), zap.Uint("userID", id))
-		return false
-	}
-	return user == 1
-}
 
 func (rep *repository) IsUserExist(email string) bool {
 	var userCount int64

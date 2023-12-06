@@ -16,6 +16,7 @@
     "baseUrl": ".",
     "paths": {
       "@intern-place/components": ["libs/components/src/index.ts"],
+      "@intern-place/services": ["libs/services/src/index.ts"],
       "@intern-place/types": ["libs/types/src/index.ts"]
     }
   },

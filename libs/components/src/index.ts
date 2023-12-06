@@ -6,6 +6,8 @@ import Input from './lib/inputs/Input';
 import useClickOutside from './lib/hooks/useClickOutside';
 import HighlightedNotices from './lib/HighlightedNotices';
 
+import * as AuthContext from './lib/contexts/AuthContext';
+
 export * from './lib/components';
 
 export { NoticeCard };
@@ -21,3 +23,5 @@ export { Input };
 export { useClickOutside };
 
 export { HighlightedNotices };
+
+export { AuthContext };

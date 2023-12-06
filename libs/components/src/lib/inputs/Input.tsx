@@ -51,7 +51,7 @@ export default function Input(props: Props) {
       />
       {props.type === 'password' && (
         <Image
-          src={showPassWord ? '/closed-eye.svg' : '/open-eye.svg'}
+          src={showPassWord ? '/open-eye.svg' : '/closed-eye.svg'}
           height={20}
           width={20}
           alt="eye"
@@ -80,7 +80,7 @@ const inputCss = css`
   background-color: white;
   background-clip: padding-box;
   border: 1px solid #ced4da;
-  border-radius: 10px;
+  border-radius: 5px;
   border: 0.7px solid black;
 `;
 

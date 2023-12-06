@@ -18,7 +18,7 @@ type repository struct {
 	repositories.GormRepository[User]
 }
 
-func StudentRepository(db *gorm.DB) Repository {
+func UserRepository(db *gorm.DB) Repository {
 
 	return &repository{repositories.NewGormRepository[User](db)}
 
@@ -41,7 +41,7 @@ func (rep *repository) AutoTx(cb func() error) error {
 
 func (rep *repository) BeginTx(ctx context.Context) (Repository, error) {
 	var tx = rep.DB.WithContext(ctx).Begin()
-	repTx := StudentRepository(tx)
+	repTx := UserRepository(tx)
 	return repTx, tx.Error
 }
 

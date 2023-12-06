@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	"github.com/gofiber/fiber/v2"
+	"gitlab.com/sincap/sincap-common/auth/claims"
 	"gitlab.com/sincap/sincap-common/middlewares"
 	"gitlab.com/sincap/sincap-common/middlewares/qapi"
 )
@@ -18,6 +19,11 @@ func StudentAdminController(r fiber.Router, s Service) {
 	r.Get("/", middlewares.QApi, res.list)
 	r.Get("/:stid", res.read)
 	r.Post("/:stid", middlewares.BodyParserMap("body"), middlewares.ValidatorMap("body", Student{}), res.update)
+}
+
+func StudentController(r fiber.Router, s Service) {
+	res := controller{s}
+	r.Get("/useMe", res.useMe)
 }
 
 func (res *controller) list(ctx *fiber.Ctx) error {
@@ -65,4 +71,19 @@ func (res *controller) update(ctx *fiber.Ctx) error {
 	}
 
 	return ctx.SendStatus(fiber.StatusNoContent)
+}
+
+
+func (res *controller) useMe(ctx *fiber.Ctx) error {
+	claims := ctx.Locals("claims").(*claims.DecryptedClaims)
+
+	student := claims.Extra["Student"].(*Student)
+
+	result,err := res.service.Read(ctx.UserContext(),student.ID);
+
+	if err != nil {
+		return err
+	}
+
+	return ctx.Format(result)
 }

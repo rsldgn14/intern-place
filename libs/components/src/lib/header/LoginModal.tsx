@@ -1,9 +1,12 @@
-import React from 'react';
 import Modal from '../Modal';
 import Image from 'next/image';
 import Input from '../inputs/Input';
 import { css } from '@emotion/react';
 import Button from '../Button';
+import { useCallback, useContext, useState } from 'react';
+import { AuthService } from '@intern-place/services';
+import { Auth } from '@intern-place/types';
+import { AuthContext } from '../contexts/AuthContext';
 
 interface Props {
   show: boolean;
@@ -11,6 +14,33 @@ interface Props {
 }
 
 export default function LoginModal(props: Props) {
+  const [loginData, setLoginData] = useState<Auth.LoginReq>({
+    Username: '',
+    Password: '',
+  });
+
+  const authContext = useContext(AuthContext);
+
+  const onUsernameChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setLoginData({ ...loginData, Username: e.target.value });
+    },
+    [loginData]
+  );
+
+  const onPasswordChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setLoginData({ ...loginData, Password: e.target.value });
+    },
+    [loginData]
+  );
+
+  const onLogin = useCallback(() => {
+    AuthService.login(loginData, authContext).then(() => {
+      props.onClose();
+    });
+  }, [authContext, loginData, props]);
+
   return (
     <Modal
       onClose={props.onClose}
@@ -23,10 +53,20 @@ export default function LoginModal(props: Props) {
       <span css={stickCss}> </span>
       <div css={inputCss}>
         <span css={titleCss}>Giriş yap</span>
-        <Input type="text" label="Kullanıcı Adı" onChange={() => {}} value="" />
-        <Input type="password" label="Şifre" onChange={() => {}} value="" />
+        <Input
+          type="text"
+          label="Kullanıcı Adı"
+          onChange={onUsernameChange}
+          value={loginData.Username}
+        />
+        <Input
+          type="password"
+          label="Şifre"
+          onChange={onPasswordChange}
+          value={loginData.Password}
+        />
         <div css={buttonCss}>
-          <Button title="Giriş Yap" variant="secondary" onClick={() => {}} />
+          <Button title="Giriş Yap" variant="secondary" onClick={onLogin} />
         </div>
       </div>
     </Modal>
@@ -60,5 +100,5 @@ const stickCss = css`
 `;
 
 const buttonCss = css`
-margin-left:50%;
+  margin-left: 50%;
 `;

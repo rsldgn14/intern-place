@@ -22,7 +22,7 @@ type service struct {
 	studentRepo students.Repository
 }
 
-func NewService(r Repository,
+func AuthService(r Repository,
 	userRepo users.Repository, studentRepo students.Repository) Service {
 	return &service{r, userRepo, studentRepo}
 }

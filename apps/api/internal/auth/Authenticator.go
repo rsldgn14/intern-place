@@ -30,10 +30,6 @@ func Authenticator(rep Repository, allowedRoles ...uint) func(ctx *fiber.Ctx) er
 		}
 		allowed := false
 
-		if !rep.IsActive(dclaims.UserID) {
-			auth.InvalidateCookies(ctx, configs.Instance.Auth)
-			return ctx.Status(401).SendString("user is inactive")
-		}
 
 		if err := auth.CheckTokenOwnership(ctx, configs.Instance.Auth, dclaims); err != nil {
 			logging.Logger.Warn("Token ownership error", zap.String("error", err.Error()), zap.String("headers", ctx.Request().Header.String()))

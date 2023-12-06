@@ -1,17 +1,23 @@
 import { css } from '@emotion/react';
-import { Sector, Sectors } from '@intern-place/types';
+import { Auth, Sector, Sectors } from '@intern-place/types';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import useClickOutside from '../hooks/useClickOutside';
-import Modal from '../Modal';
-import Input from '../inputs/Input';
 import LoginModal from './LoginModal';
+import RegisterModal from './RegisterModal';
+import { AuthContext } from '../contexts/AuthContext';
 
 export default function Header() {
   const [sectors, setSectors] = useState<Sector[]>([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
+  const [isRegisterModalOpen, setIsRegisterModalOpen] =
+    useState<boolean>(false);
+
+  const authContext = useContext(AuthContext);
+
+  console.log('user', authContext.user);
 
   const router = useRouter();
 
@@ -19,8 +25,16 @@ export default function Header() {
     setIsLoginModalOpen(false);
   }, []);
 
+  const onCloseRegisterModal = useCallback(() => {
+    setIsRegisterModalOpen(false);
+  }, []);
+
   const openLoginModal = useCallback(() => {
     setIsLoginModalOpen(true);
+  }, []);
+
+  const openRegisterModal = useCallback(() => {
+    setIsRegisterModalOpen(true);
   }, []);
 
   const onClickSectorMenu = useCallback(() => {
@@ -88,16 +102,32 @@ export default function Header() {
             )}
           </div>
           <div css={selectedCss} onClick={() => router.push('/notice')}>
-            {' '}
-            Tüm İlanlar{' '}
+            Tüm İlanlar
           </div>
         </div>
-        <div css={menuCss}>
-          <div onClick={openLoginModal}> Giriş Yap </div>
-          <div> Kayıt Ol </div>
-        </div>
+        {!authContext.user?.RoleID ? (
+          <div css={menuCss}>
+            <div onClick={openLoginModal}> Giriş Yap </div>
+            <div onClick={openRegisterModal}> Kayıt Ol </div>
+          </div>
+        ) : (
+          <div
+            css={menuCss}
+            onClick={() => {
+              Auth.logout().then(() => {
+                router.reload();
+              });
+            }}
+          >
+            <div> Çıkış Yap </div>
+          </div>
+        )}
       </div>
       <LoginModal show={isLoginModalOpen} onClose={onCloseLoginModal} />
+      <RegisterModal
+        show={isRegisterModalOpen}
+        onClose={onCloseRegisterModal}
+      />
     </>
   );
 }

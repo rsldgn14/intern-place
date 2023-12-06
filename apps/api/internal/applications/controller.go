@@ -17,7 +17,11 @@ func ApplicationAdminController(r fiber.Router, s Service) {
 	res := controller{s}
 	r.Get("/", middlewares.QApi, res.list)
 	r.Get("/:sid", res.read)
+}
 
+func ApplicationStudentController(r fiber.Router, s Service) {
+	res := controller{s}
+	r.Post("/", middlewares.BodyParser[Application]("body") ,res.create)
 }
 
 func (res *controller) list(ctx *fiber.Ctx) error {
@@ -48,4 +52,18 @@ func (res *controller) read(ctx *fiber.Ctx) error {
 	}
 
 	return ctx.Format(student)
+}
+
+func (res *controller) create(ctx *fiber.Ctx) error {
+	
+	body := ctx.Locals("body").(*Application)
+
+
+	err := res.service.Create(ctx.UserContext(), body)
+
+	if err != nil {
+		return err
+	}
+
+	return ctx.SendStatus(http.StatusCreated)
 }

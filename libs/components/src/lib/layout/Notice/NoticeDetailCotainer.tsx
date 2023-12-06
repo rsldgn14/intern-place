@@ -1,14 +1,18 @@
 import { css } from '@emotion/react';
 import NoticeCompanyArea from './NoticeCompanyArea';
-import { Notices } from '@intern-place/types';
+import { Applications, Notices, Users } from '@intern-place/types';
 import NoticeInformationArea from './NoticeInformationArea';
 import Button from '../../Button';
+import { useContext } from 'react';
+import { AuthContext } from '../../contexts/AuthContext';
 
 interface Props {
   notice: Notices.Notice | null;
 }
 
 export default function NoticeDetailContainer(props: Props) {
+  const authCtx = useContext(AuthContext);
+
   return (
     <div css={containerCss}>
       <div css={detailCss}>
@@ -16,9 +20,21 @@ export default function NoticeDetailContainer(props: Props) {
         <NoticeCompanyArea company={props.notice?.Company} />
         <div css={pageTitleCss}> Başvuru Detayı </div>
         <NoticeInformationArea notice={props.notice} />
-        <div css={buttonCss}>
-          <Button size="large" title="Başvur" />
-        </div>
+        {authCtx.user?.RoleID === Users.Role.STUDENT && (
+          <div
+            css={buttonCss}
+            onClick={() =>
+              Applications.create({
+                CompanyID: props.notice?.Company.ID ?? 0,
+                NoticeID: props.notice?.ID ?? 0,
+                StudentID: authCtx.user?.ID ?? 0,
+                Status: Applications.ApplicationStatus.WAITING,
+              })
+            }
+          >
+            <Button size="large" title="Başvur" />
+          </div>
+        )}
       </div>
     </div>
   );

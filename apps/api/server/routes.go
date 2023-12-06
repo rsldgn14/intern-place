@@ -2,10 +2,14 @@ package server
 
 import (
 	"intern-api/apps/api/internal/applications"
+	"intern-api/apps/api/internal/auth"
 	"intern-api/apps/api/internal/companies"
 	"intern-api/apps/api/internal/notices"
+	"intern-api/apps/api/internal/roles"
 	"intern-api/apps/api/internal/sectors"
 	"intern-api/apps/api/internal/students"
+	"intern-api/apps/api/internal/users"
+	"intern-api/apps/api/jwt"
 
 	"github.com/gofiber/fiber/v2"
 	"gitlab.com/sincap/sincap-common/db"
@@ -22,7 +26,7 @@ func AddRoutes(app *fiber.App) {
 
 func authenticatedRoutes(r fiber.Router) {
 	adminRoutes(r)
-	internRoutes(r)
+	studentRoutes(r)
 	companyRoutes(r)
 
 }
@@ -32,6 +36,8 @@ func publicRoutes(r fiber.Router) {
 
 	notices.NoticePublicController(public.Group("/notices"), notices.NoticeService(notices.NoticeRepository(db.DB())))
 	sectors.SectorPublicControler(public.Group("/sectors"), sectors.SectorService(sectors.SectorRepository(db.DB())))
+	auth.AuthController(public.Group("/auth"), auth.AuthService(auth.AuthRepository(db.DB()),users.UserRepository(db.DB()),students.StudentRepository(db.DB())))
+
 }
 
 func adminRoutes(r fiber.Router) {
@@ -43,8 +49,11 @@ func adminRoutes(r fiber.Router) {
 	applications.ApplicationAdminController(admin.Group("/applications"), applications.ApplicationService(applications.ApplicationRepository(db.DB())))
 }
 
-func internRoutes(r fiber.Router) {
-	//intern := r.Group("/intern")
+func studentRoutes(r fiber.Router) {
+	student := r.Group("/students").Use(jwt.JWT()...)
+	student.Use(auth.Authenticator(auth.AuthRepository(db.DB()),roles.STUDENT))
+	students.StudentController(student.Group("/students"), students.StudentService(students.StudentRepository(db.DB())))
+	applications.ApplicationStudentController(student.Group("/applications"), applications.ApplicationService(applications.ApplicationRepository(db.DB())))
 }
 
 func companyRoutes(r fiber.Router) {

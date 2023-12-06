@@ -11,10 +11,13 @@ type service struct {
 	repository Repository
 }
 
-func StudentService(r Repository) Service {
+func UserService(r Repository) Service {
 	return &service{
 		CrudService: services.CrudService[User]{Repository: r},
 		repository:  r,
 	}
 
 }
+
+
+

@@ -30,3 +30,4 @@ func (s service) ReadApplicationWithPreload(id uint) (*Application, error) {
 	return &student, nil
 
 }
+

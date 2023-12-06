@@ -1,8 +1,8 @@
 import { AppProps } from 'next/app';
 import Head from 'next/head';
 import './styles.css';
-import { Header } from '@intern-place/components';
 import { Roboto } from 'next/font/google';
+import { AuthContext, Header } from '@intern-place/components';
 
 const roboto = Roboto({ subsets: ['latin'], weight: ['400', '700'] });
 
@@ -13,8 +13,10 @@ function CustomApp({ Component, pageProps }: AppProps) {
         <title>InternNexa</title>
       </Head>
       <main className={roboto.className}>
-        <Header />
-        <Component {...pageProps} />
+        <AuthContext.AuthProvider>
+          <Header />
+          <Component {...pageProps} />
+        </AuthContext.AuthProvider>
       </main>
     </>
   );
