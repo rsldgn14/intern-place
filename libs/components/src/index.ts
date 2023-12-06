@@ -1,21 +1,23 @@
-import NoticeCard from "./lib/NoticeCard"
-import Header from "./lib/header/Header";
-import NoticeDetailContainer from "./lib/layout/Notice/NoticeDetailCotainer";
-import SectorNoticeSections from "./lib/notice/SectorNoticeSections";
-import useClickOutside from "./lib/hooks/useClickOutside";
-
+import NoticeCard from './lib/NoticeCard';
+import Header from './lib/header/Header';
+import NoticeDetailContainer from './lib/layout/Notice/NoticeDetailCotainer';
+import SectorNoticeSections from './lib/notice/SectorNoticeSections';
+import Input from './lib/inputs/Input';
+import useClickOutside from './lib/hooks/useClickOutside';
+import HighlightedNotices from './lib/HighlightedNotices';
 
 export * from './lib/components';
 
+export { NoticeCard };
 
+export { Header };
 
+export { NoticeDetailContainer };
 
-export { NoticeCard }
+export { SectorNoticeSections };
 
-export { Header }
+export { Input };
 
-export { NoticeDetailContainer}
+export { useClickOutside };
 
-export {SectorNoticeSections}
-
-export {useClickOutside}
+export { HighlightedNotices };

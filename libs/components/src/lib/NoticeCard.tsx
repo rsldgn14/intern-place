@@ -32,7 +32,7 @@ export default function NoticeCard(props: Props) {
             <SectorInfo
               title={props.notice.Sector?.Name}
               directLink={`sectors/${props.notice.Sector.ID}`}
-              color="yellow"
+              color="rgba(60, 80, 100, 0.4)"
             />
           )}
 
@@ -57,7 +57,7 @@ export default function NoticeCard(props: Props) {
 }
 
 const noticeCardContainer = css`
-  border: 1px solid black;
+  border: 1px solid lightgray;
   width: 250px;
   height: 420px;
   border-radius: 10px;
@@ -65,6 +65,9 @@ const noticeCardContainer = css`
     rgba(254, 141, 198, 0.6),
     rgba(254, 209, 199, 0.6)
   );
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  transition: box-shadow 0.3s ease-in-out;
 `;
 
 const imgCss = css`
