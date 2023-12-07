@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	"github.com/gofiber/fiber/v2"
+	"gitlab.com/sincap/sincap-common/auth/claims"
 	"gitlab.com/sincap/sincap-common/middlewares"
 	"gitlab.com/sincap/sincap-common/middlewares/qapi"
 )
@@ -22,6 +23,7 @@ func ApplicationAdminController(r fiber.Router, s Service) {
 func ApplicationStudentController(r fiber.Router, s Service) {
 	res := controller{s}
 	r.Post("/", middlewares.BodyParser[Application]("body") ,res.create)
+	r.Get("/mine", res.getStudentApplications)
 }
 
 func (res *controller) list(ctx *fiber.Ctx) error {
@@ -66,4 +68,27 @@ func (res *controller) create(ctx *fiber.Ctx) error {
 	}
 
 	return ctx.SendStatus(http.StatusCreated)
+}
+
+
+func (res *controller) getStudentApplications(ctx *fiber.Ctx) error {
+	
+	claims := ctx.Locals("claims").(*claims.DecryptedClaims)
+
+	studentID,ok := claims.Extra["StudentID"].(float64)
+
+
+	if !ok {
+		return fiber.NewError(http.StatusNotFound, "Student id not found")
+
+	}
+
+
+	applications, err := res.service.GetStudentApplications(uint(studentID))
+
+	if err != nil {
+		return err
+	}
+
+	return ctx.Format(applications)
 }

@@ -5,6 +5,7 @@ import "gitlab.com/sincap/sincap-common/services"
 type Service interface {
 	services.Service[Application]
 	ReadApplicationWithPreload(id uint) (*Application, error)
+	GetStudentApplications(studentID uint) ([]Application, error)
 }
 
 type service struct {
@@ -31,3 +32,7 @@ func (s service) ReadApplicationWithPreload(id uint) (*Application, error) {
 
 }
 
+
+func (s service) GetStudentApplications(studentID uint) ([]Application, error) {
+	return s.repository.GetStudentApplications(studentID)
+}

@@ -17,4 +17,5 @@ type Student struct {
 	Grade      uint
 	Experience string
 	User       *users.User `gorm:"foreignKey:UserID"`
+	Description string 
 }

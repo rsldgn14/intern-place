@@ -21,6 +21,12 @@ func StudentAdminController(r fiber.Router, s Service) {
 	r.Post("/:stid", middlewares.BodyParserMap("body"), middlewares.ValidatorMap("body", Student{}), res.update)
 }
 
+
+func StudentPublicController(r fiber.Router, s Service) {
+	res := controller{s}
+	r.Get("/:stid", res.read)
+}
+
 func StudentController(r fiber.Router, s Service) {
 	res := controller{s}
 	r.Get("/useMe", res.useMe)

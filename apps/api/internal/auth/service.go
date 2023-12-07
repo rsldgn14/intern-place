@@ -81,7 +81,7 @@ func fillExtras(u *users.User, ser *service, tx users.Repository) (map[string]in
 			tx.RollbackTx()
 			return nil, services.NewError(500, "Student not found")
 		}
-		claimsExtras["Student"] = student
+		claimsExtras["StudentID"] = student.ID
 
 	}
 	return claimsExtras, nil

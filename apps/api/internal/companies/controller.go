@@ -20,6 +20,11 @@ func CompanyAdminController(r fiber.Router, s Service) {
 	), middlewares.ValidatorMap("body", Company{}), res.update)
 }
 
+func CompanyPublicController(r fiber.Router, s Service) {
+	res := controller{s}
+	r.Get("/:sid", res.read)
+}
+
 type controller struct {
 	service Service
 }

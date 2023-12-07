@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { Auth, Sector, Sectors } from '@intern-place/types';
+import { Auth, Sector, Sectors, Users } from '@intern-place/types';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useCallback, useContext, useEffect, useState } from 'react';
@@ -16,8 +16,6 @@ export default function Header() {
     useState<boolean>(false);
 
   const authContext = useContext(AuthContext);
-
-  console.log('user', authContext.user);
 
   const router = useRouter();
 
@@ -104,6 +102,14 @@ export default function Header() {
           <div css={selectedCss} onClick={() => router.push('/notice')}>
             Tüm İlanlar
           </div>
+          {authContext.user?.RoleID === Users.Role.STUDENT && (
+            <div
+              css={selectedCss}
+              onClick={() => router.push('/applications/student')}
+            >
+              Başvurularım
+            </div>
+          )}
         </div>
         {!authContext.user?.RoleID ? (
           <div css={menuCss}>

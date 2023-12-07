@@ -23,7 +23,7 @@ func CompanyService(r Repository) Service {
 func (s service) ReadCompanyWithPreloads(id uint) (*Company, error) {
 	var company Company
 
-	if err := s.repository.Read(&company, id, "Sector"); err != nil {
+	if err := s.repository.Read(&company, id, "Sector","User"); err != nil {
 		return nil, err
 	}
 

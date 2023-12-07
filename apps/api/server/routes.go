@@ -33,11 +33,11 @@ func authenticatedRoutes(r fiber.Router) {
 
 func publicRoutes(r fiber.Router) {
 	public := r.Group("/public")
-
 	notices.NoticePublicController(public.Group("/notices"), notices.NoticeService(notices.NoticeRepository(db.DB())))
 	sectors.SectorPublicControler(public.Group("/sectors"), sectors.SectorService(sectors.SectorRepository(db.DB())))
 	auth.AuthController(public.Group("/auth"), auth.AuthService(auth.AuthRepository(db.DB()),users.UserRepository(db.DB()),students.StudentRepository(db.DB())))
-
+	students.StudentPublicController(public.Group("/students"), students.StudentService(students.StudentRepository(db.DB())))
+	companies.CompanyPublicController(public.Group("/companies"), companies.CompanyService(companies.CompanyRepository((db.DB()))))
 }
 
 func adminRoutes(r fiber.Router) {

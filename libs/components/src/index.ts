@@ -5,6 +5,7 @@ import SectorNoticeSections from './lib/notice/SectorNoticeSections';
 import Input from './lib/inputs/Input';
 import useClickOutside from './lib/hooks/useClickOutside';
 import HighlightedNotices from './lib/HighlightedNotices';
+import UserDetailContainer from './lib/layout/UserDetailContainer';
 
 import * as AuthContext from './lib/contexts/AuthContext';
 
@@ -25,3 +26,5 @@ export { useClickOutside };
 export { HighlightedNotices };
 
 export { AuthContext };
+
+export { UserDetailContainer };

@@ -1,8 +1,10 @@
 package companies
 
 import (
-	"gorm.io/gorm"
 	"intern-api/apps/api/internal/sectors"
+	"intern-api/apps/api/internal/users"
+
+	"gorm.io/gorm"
 )
 
 type Company struct {
@@ -13,4 +15,5 @@ type Company struct {
 	Sector      []*sectors.Sector `gorm:"many2many:CompanySectors;"`
 	Address     string            `validate:"required"`
 	Email       string
+	User       *users.User `gorm:"foreignKey:UserID"`
 }

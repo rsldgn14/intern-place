@@ -36,9 +36,13 @@ export default function LoginModal(props: Props) {
   );
 
   const onLogin = useCallback(() => {
-    AuthService.login(loginData, authContext).then(() => {
-      props.onClose();
-    });
+    AuthService.login(loginData, authContext)
+      .then(() => {
+        props.onClose();
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
   }, [authContext, loginData, props]);
 
   return (
