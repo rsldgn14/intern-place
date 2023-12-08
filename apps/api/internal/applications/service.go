@@ -6,6 +6,9 @@ type Service interface {
 	services.Service[Application]
 	ReadApplicationWithPreload(id uint) (*Application, error)
 	GetStudentApplications(studentID uint) ([]Application, error)
+	GetCompanyApplications(companyID uint) ([]Application, error)
+	Approve(appID ,companyID uint) error 
+	Reject(appID ,companyID uint) error 
 }
 
 type service struct {
@@ -35,4 +38,18 @@ func (s service) ReadApplicationWithPreload(id uint) (*Application, error) {
 
 func (s service) GetStudentApplications(studentID uint) ([]Application, error) {
 	return s.repository.GetStudentApplications(studentID)
+}
+
+
+func (s service) GetCompanyApplications(companyID uint) ([]Application, error) {
+	return s.repository.GetCompanyApplications(companyID)
+}
+
+
+func (s service) Approve(appID ,companyID uint) error {
+	return s.repository.Approve(appID,companyID)
+}
+
+func (s service) Reject(appID ,companyID uint) error {
+	return s.repository.Reject(appID,companyID)
 }

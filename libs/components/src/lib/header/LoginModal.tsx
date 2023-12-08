@@ -7,6 +7,7 @@ import { useCallback, useContext, useState } from 'react';
 import { AuthService } from '@intern-place/services';
 import { Auth } from '@intern-place/types';
 import { AuthContext } from '../contexts/AuthContext';
+import { useKeyPress } from '../hooks/useKeyPress';
 
 interface Props {
   show: boolean;
@@ -44,6 +45,8 @@ export default function LoginModal(props: Props) {
         console.log(err.message);
       });
   }, [authContext, loginData, props]);
+
+  useKeyPress('Enter', onLogin);
 
   return (
     <Modal

@@ -41,9 +41,17 @@ export async function publicRead(id: string | number) {
   });
 }
 
+export async function compniesApplication(options?: RequestInit) {
+  return await request(`companies/applications/mine`, {
+    method: 'GET',
+    ...options,
+  });
+}
+
 export const Companies = {
   get,
   getAll,
   update,
   publicRead,
+  compniesApplication,
 };

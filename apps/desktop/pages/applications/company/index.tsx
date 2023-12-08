@@ -1,18 +1,19 @@
 import { css } from '@emotion/react';
-import { StudentApplicationCard } from '@intern-place/components';
-import { Applications, Students } from '@intern-place/types';
+import { CompanyApplicationCard } from '@intern-place/components';
+import { Applications, Companies } from '@intern-place/types';
 import { GetServerSideProps } from 'next';
 
 interface Props {
   applications: Applications.Application[];
 }
 
-export default function StudentApplication(props: Props) {
+export default function Index(props: Props) {
+  console.log(props.applications);
   return (
     <div css={containerCSs}>
       {props.applications.length > 0
         ? props.applications.map((app, key) => (
-            <StudentApplicationCard key={key} application={app} />
+            <CompanyApplicationCard key={key} application={app} />
           ))
         : 'Not found'}
     </div>
@@ -44,13 +45,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
 
-  const applications = await Students.studentApplications({
+  const applications = await Companies.compniesApplication({
     headers: {
       Authorization: `Bearer ${jwt}`,
     },
   });
-
-  console.log(applications);
 
   return {
     props: {

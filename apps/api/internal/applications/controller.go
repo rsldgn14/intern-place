@@ -26,6 +26,13 @@ func ApplicationStudentController(r fiber.Router, s Service) {
 	r.Get("/mine", res.getStudentApplications)
 }
 
+func ApplicationCompanyController(r fiber.Router, s Service) {
+	res := controller{s}
+	r.Get("/mine", res.getCompanyApplications)
+	r.Patch("/:stid/approve", res.approve)
+	r.Patch("/:stid/reject", res.reject)
+}
+
 func (res *controller) list(ctx *fiber.Ctx) error {
 	q := ctx.Locals("qapi").(*qapi.Query)
 
@@ -59,6 +66,17 @@ func (res *controller) read(ctx *fiber.Ctx) error {
 func (res *controller) create(ctx *fiber.Ctx) error {
 	
 	body := ctx.Locals("body").(*Application)
+	claims := ctx.Locals("claims").(*claims.DecryptedClaims)
+
+	studentID,ok := claims.Extra["StudentID"].(float64)
+
+	
+	if !ok {
+		return fiber.NewError(http.StatusNotFound, "Student id not found")
+
+	}
+
+	body.StudentID = uint(studentID)
 
 
 	err := res.service.Create(ctx.UserContext(), body)
@@ -67,7 +85,7 @@ func (res *controller) create(ctx *fiber.Ctx) error {
 		return err
 	}
 
-	return ctx.SendStatus(http.StatusCreated)
+	return ctx.SendStatus(http.StatusNoContent)
 }
 
 
@@ -92,3 +110,68 @@ func (res *controller) getStudentApplications(ctx *fiber.Ctx) error {
 
 	return ctx.Format(applications)
 }
+
+
+func (res *controller) getCompanyApplications(ctx *fiber.Ctx) error {
+	claims := ctx.Locals("claims").(*claims.DecryptedClaims)
+	companyID,ok := claims.Extra["CompanyID"].(float64)
+
+	if !ok {
+		return fiber.NewError(http.StatusNotFound, "Student id not found")
+
+	}
+	applications, err := res.service.GetCompanyApplications(uint(companyID))
+
+	if err != nil {
+		return err
+	}
+
+	return ctx.Format(applications)
+
+}
+
+func (res *controller) approve(ctx *fiber.Ctx) error {
+	appid, err := ctx.ParamsInt("stid")
+
+	if err != nil {
+		return err
+	}
+
+	claims := ctx.Locals("claims").(*claims.DecryptedClaims)
+	companyID,ok := claims.Extra["CompanyID"].(float64)
+
+	if !ok {
+		return fiber.NewError(http.StatusNotFound, "Student id not found")
+
+	}
+
+	if err := res.service.Approve(uint(appid),uint(companyID));err != nil {
+		return err
+	}
+
+	return ctx.SendStatus(http.StatusNoContent)
+}
+
+
+func (res *controller) reject(ctx *fiber.Ctx) error {
+	appid, err := ctx.ParamsInt("stid")
+
+	if err != nil {
+		return err
+	}
+
+	claims := ctx.Locals("claims").(*claims.DecryptedClaims)
+	companyID,ok := claims.Extra["CompanyID"].(float64)
+
+	if !ok {
+		return fiber.NewError(http.StatusNotFound, "Student id not found")
+
+	}
+
+	if err := res.service.Reject(uint(appid),uint(companyID));err != nil {
+		return err
+	}
+
+	return ctx.SendStatus(http.StatusNoContent)
+
+	}

@@ -3,6 +3,7 @@ package auth
 import (
 	"context"
 	"intern-api/apps/api/configs"
+	"intern-api/apps/api/internal/companies"
 	"intern-api/apps/api/internal/roles"
 	"intern-api/apps/api/internal/students"
 	"intern-api/apps/api/internal/users"
@@ -20,11 +21,12 @@ type service struct {
 	repository  Repository
 	usersRepo   users.Repository
 	studentRepo students.Repository
+	companyRepo companies.Repository
 }
 
 func AuthService(r Repository,
-	userRepo users.Repository, studentRepo students.Repository) Service {
-	return &service{r, userRepo, studentRepo}
+	userRepo users.Repository, studentRepo students.Repository, companyRepo companies.Repository) Service {
+	return &service{r, userRepo, studentRepo,companyRepo}
 }
 func (ser *service) Login(ctx context.Context, req *LoginReq, userAgent, ip string) (*users.User, *claims.EncryptedClaims, error) {
 	password := req.Password
@@ -83,6 +85,14 @@ func fillExtras(u *users.User, ser *service, tx users.Repository) (map[string]in
 		}
 		claimsExtras["StudentID"] = student.ID
 
+	}else if u.RoleID == users.Role(roles.COMPANY) {
+		company, err := ser.companyRepo.FindByUserID(u.ID)
+		if err != nil || company == nil {
+			tx.RollbackTx()
+			return nil, services.NewError(500, "Company not found")
+		}
+		claimsExtras["CompanyID"] = company.ID
+	
 	}
 	return claimsExtras, nil
 }

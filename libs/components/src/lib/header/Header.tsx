@@ -7,6 +7,8 @@ import useClickOutside from '../hooks/useClickOutside';
 import LoginModal from './LoginModal';
 import RegisterModal from './RegisterModal';
 import { AuthContext } from '../contexts/AuthContext';
+import StudentHeader from './StudentHeader';
+import CompanyHeader from './CompanyHeader';
 
 export default function Header() {
   const [sectors, setSectors] = useState<Sector[]>([]);
@@ -102,14 +104,8 @@ export default function Header() {
           <div css={selectedCss} onClick={() => router.push('/notice')}>
             Tüm İlanlar
           </div>
-          {authContext.user?.RoleID === Users.Role.STUDENT && (
-            <div
-              css={selectedCss}
-              onClick={() => router.push('/applications/student')}
-            >
-              Başvurularım
-            </div>
-          )}
+          {authContext.user?.RoleID === Users.Role.STUDENT && <StudentHeader />}
+          {authContext.user?.RoleID === Users.Role.COMPANY && <CompanyHeader />}
         </div>
         {!authContext.user?.RoleID ? (
           <div css={menuCss}>
@@ -117,15 +113,19 @@ export default function Header() {
             <div onClick={openRegisterModal}> Kayıt Ol </div>
           </div>
         ) : (
-          <div
-            css={menuCss}
-            onClick={() => {
-              Auth.logout().then(() => {
-                router.reload();
-              });
-            }}
-          >
-            <div> Çıkış Yap </div>
+          <div css={menuCss}>
+            <div>
+              {authContext.user.FirstName + ' ' + authContext.user.LastName}
+            </div>
+            <div
+              onClick={() => {
+                Auth.logout().then(() => {
+                  router.reload();
+                });
+              }}
+            >
+              Çıkış Yap
+            </div>
           </div>
         )}
       </div>

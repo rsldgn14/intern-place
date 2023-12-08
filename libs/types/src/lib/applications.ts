@@ -16,6 +16,10 @@ export interface Application {
   Status: number;
 }
 
+export interface StudentApplicationContextProps {
+  applications?: Application[];
+}
+
 export enum Status {
   Waiting = +1,
   Rejected,
@@ -54,5 +58,17 @@ export async function create(body: Partial<Application>) {
   return await request<Application>('students/applications', {
     method: 'POST',
     body: JSON.stringify(body),
+  });
+}
+
+export async function approve(id: string | number) {
+  return await request<never>(`companies/applications/${id}/approve`, {
+    method: 'PATCH',
+  });
+}
+
+export async function reject(id: string | number) {
+  return await request<never>(`companies/applications/${id}/reject`, {
+    method: 'PATCH',
   });
 }

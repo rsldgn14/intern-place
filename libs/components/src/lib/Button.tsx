@@ -10,14 +10,14 @@ const buttonStyles = css`
   transition: box-shadow 0.3s ease-in-out;
 `;
 
-const primaryStyles = css`
-  background-color: #d3bed3;
+const primaryStyles = (danger?: boolean) => css`
+  background-color: ${danger ? '#FF6666' : '#d3bed3'};
   color: black;
 `;
 
-const secondaryStyles = css`
+const secondaryStyles = (danger?: boolean) => css`
   background-color: #ffffff;
-  color: black;
+  color: ${danger ? '#FF6666' : 'black'}';
   border: 1px solid #d3bed3;
 `;
 
@@ -25,6 +25,7 @@ interface Props {
   title?: string;
   size?: 'large' | 'small' | 'medium';
   variant?: 'primary' | 'secondary';
+  danger?: boolean;
   onClick?: () => void;
 }
 
@@ -35,8 +36,8 @@ export default function Button(props: Props) {
     <button
       css={[
         buttonStyles,
-        variant === 'primary' && primaryStyles,
-        variant === 'secondary' && secondaryStyles,
+        variant === 'primary' && primaryStyles(props.danger),
+        variant === 'secondary' && secondaryStyles(props.danger),
         size === 'large' &&
           css`
             font-size: 20px;

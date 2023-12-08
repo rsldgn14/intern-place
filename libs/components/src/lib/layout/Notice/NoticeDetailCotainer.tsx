@@ -3,15 +3,31 @@ import NoticeCompanyArea from './NoticeCompanyArea';
 import { Applications, Notices, Users } from '@intern-place/types';
 import NoticeInformationArea from './NoticeInformationArea';
 import Button from '../../Button';
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../contexts/AuthContext';
+import { StudentApplicationContext } from '../../contexts/StudentApplicationContext';
+import { useRouter } from 'next/router';
 
 interface Props {
   notice: Notices.Notice | null;
 }
 
 export default function NoticeDetailContainer(props: Props) {
+  const [hasApplication, setHasApplication] = useState<boolean>(false);
+
   const authCtx = useContext(AuthContext);
+  const appCtx = useContext(StudentApplicationContext);
+
+  const router = useRouter();
+
+  useEffect(() => {
+    const hasApplication = appCtx.applications?.some(
+      (app) => app.NoticeID === props.notice?.ID
+    );
+    setHasApplication(hasApplication ?? false);
+
+    console.log(appCtx.applications);
+  }, [appCtx.applications, props.notice?.ID]);
 
   return (
     <div css={containerCss}>
@@ -20,16 +36,15 @@ export default function NoticeDetailContainer(props: Props) {
         <NoticeCompanyArea company={props.notice?.Company} />
         <div css={pageTitleCss}> Başvuru Detayı </div>
         <NoticeInformationArea notice={props.notice} />
-        {authCtx.user?.RoleID === Users.Role.STUDENT && (
+        {authCtx.user?.RoleID === Users.Role.STUDENT && !hasApplication && (
           <div
             css={buttonCss}
             onClick={() =>
               Applications.create({
                 CompanyID: props.notice?.Company.ID ?? 0,
                 NoticeID: props.notice?.ID ?? 0,
-                StudentID: authCtx.user?.ID ?? 0,
                 Status: Applications.ApplicationStatus.WAITING,
-              })
+              }).then(() => router.reload())
             }
           >
             <Button size="large" title="Başvur" />
