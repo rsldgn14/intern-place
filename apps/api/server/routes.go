@@ -60,4 +60,6 @@ func companyRoutes(r fiber.Router) {
 	company := r.Group("/companies").Use(jwt.JWT()...)
 	company.Use(auth.Authenticator(auth.AuthRepository(db.DB()),roles.COMPANY))
 	applications.ApplicationCompanyController(company.Group("/applications"), applications.ApplicationService(applications.ApplicationRepository(db.DB())))
+	companies.CompanyController(company, companies.CompanyService(companies.CompanyRepository((db.DB()))))
+	notices.NoticeCompanyController(company.Group("/notices"), notices.NoticeService(notices.NoticeRepository(db.DB())))
 }

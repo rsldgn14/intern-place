@@ -48,10 +48,18 @@ export async function compniesApplication(options?: RequestInit) {
   });
 }
 
+export async function me(options?: RequestInit) {
+  return await request(`companies/me`, {
+    method: 'GET',
+    ...options,
+  });
+}
+
 export const Companies = {
   get,
   getAll,
   update,
   publicRead,
   compniesApplication,
+  me,
 };

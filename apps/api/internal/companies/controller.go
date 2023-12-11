@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	"github.com/gofiber/fiber/v2"
+	"gitlab.com/sincap/sincap-common/auth/claims"
 	"gitlab.com/sincap/sincap-common/middlewares"
 	"gitlab.com/sincap/sincap-common/middlewares/qapi"
 )
@@ -23,6 +24,11 @@ func CompanyAdminController(r fiber.Router, s Service) {
 func CompanyPublicController(r fiber.Router, s Service) {
 	res := controller{s}
 	r.Get("/:sid", res.read)
+}
+
+func CompanyController(r fiber.Router, s Service) {
+	res := controller{s}
+	r.Get("/me", res.me)
 }
 
 type controller struct {
@@ -74,4 +80,26 @@ func (res *controller) update(ctx *fiber.Ctx) error {
 	}
 
 	return ctx.SendStatus(fiber.StatusNoContent)
+}
+
+
+
+func (res *controller) me(ctx *fiber.Ctx) error {
+	claims := ctx.Locals("claims").(*claims.DecryptedClaims)
+
+	coachID, ok:= claims.Extra["CompanyID"].(float64)
+
+	if !ok {
+		return fiber.NewError(http.StatusNotFound, "Company id not found")
+
+	}
+
+
+	company, err := res.service.ReadCompanyWithPreloads(uint(coachID))
+
+	if err != nil {
+		return err
+	}
+
+	return ctx.Format(company)
 }

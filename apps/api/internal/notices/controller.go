@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	"github.com/gofiber/fiber/v2"
+	"gitlab.com/sincap/sincap-common/auth/claims"
 	"gitlab.com/sincap/sincap-common/middlewares"
 	"gitlab.com/sincap/sincap-common/middlewares/qapi"
 )
@@ -20,12 +21,39 @@ func NoticeAdminController(r fiber.Router, s Service) {
 	r.Post("/:nid", middlewares.BodyParserMap("body"), middlewares.ValidatorMap("body", Notice{}), res.update)
 }
 
+func NoticeCompanyController(r fiber.Router, s Service) {
+	res := controller{s}
+	r.Post("/", middlewares.BodyParser[Notice]("body"), middlewares.Validator("body"), res.create)
+
+}
+
 //TO-DO: Add NoticeStudentController for apply notice
 // func NoticeStudentController(r fiber.Router, s Service) {
 // 	res := controller{s}
 // 	r.Get("/", middlewares.QApi, res.list)
 // 	r.Get("/:nid", res.read)
 // }
+
+func (res *controller) create(ctx *fiber.Ctx) error {
+	body := ctx.Locals("body").(*Notice)
+
+	claims := ctx.Locals("claims").(*claims.DecryptedClaims)
+	companyID,ok := claims.Extra["CompanyID"].(float64)
+
+	if !ok {
+		return fiber.NewError(http.StatusNotFound, "Student id not found")
+
+	}
+
+	body.CompanyID = uint(companyID)
+
+	if err := res.service.Create(ctx.UserContext(), body); err != nil {
+		return err
+
+	}	
+
+	return ctx.SendStatus(fiber.StatusNoContent)
+}
 
 func NoticePublicController(r fiber.Router, s Service) {
 	res := controller{s}

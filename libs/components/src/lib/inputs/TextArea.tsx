@@ -1,12 +1,10 @@
 import { css } from '@emotion/react';
-import { useEffect, useState } from 'react';
-import Image from 'next/image';
+import { useEffect } from 'react';
 
 interface Props {
   label?: string;
-  type: string;
   value?: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   placeholder?: string;
   disabled?: boolean;
   required?: boolean;
@@ -15,21 +13,19 @@ interface Props {
   maxLength?: number;
 }
 
-export default function Input(props: Props) {
-  const [showPassWord, setShowPassWord] = useState<boolean>(false);
-
+export default function TextArea(props: Props) {
   //check max length
   useEffect(() => {
     if (
       props.maxLength &&
       props.value &&
-      props.value?.length > props.maxLength
+      props.value.length > props.maxLength
     ) {
       props.onChange({
         target: {
-          value: props.value?.slice(0, props.maxLength),
+          value: props.value.slice(0, props.maxLength),
         },
-      } as React.ChangeEvent<HTMLInputElement>);
+      } as React.ChangeEvent<HTMLTextAreaElement>);
     }
   }, [props, props.value]);
 
@@ -41,9 +37,8 @@ export default function Input(props: Props) {
         </label>
       )}
 
-      <input
-        css={inputCss}
-        type={props.type === 'password' && showPassWord ? 'text' : props.type}
+      <textarea
+        css={textareaCss}
         className="form-control"
         placeholder={props.placeholder}
         value={props.value}
@@ -52,17 +47,10 @@ export default function Input(props: Props) {
         required={props.required}
         name={props.name}
         id={props.id}
+        cols={50} // Sabit sütun sayısı
+        rows={4} // Başlangıçta görünen satır sayısı
       />
-      {props.type === 'password' && (
-        <Image
-          src={showPassWord ? '/open-eye.svg' : '/closed-eye.svg'}
-          height={20}
-          width={20}
-          alt="eye"
-          css={showPasswordCss}
-          onClick={() => setShowPassWord(!showPassWord)}
-        />
-      )}
+
       {props.maxLength && (
         <span css={maxLengthCss}>
           {props.value?.length}/{props.maxLength}
@@ -72,8 +60,8 @@ export default function Input(props: Props) {
   );
 }
 
-const inputCss = css`
-  //modern input css
+const textareaCss = css`
+  //modern textarea css
   display: block;
   width: 100%;
   padding: 0.375rem 0.75rem;
@@ -86,8 +74,10 @@ const inputCss = css`
   border: 1px solid #ced4da;
   border-radius: 5px;
   border: 0.7px solid black;
+  overflow-y: auto; // Dikey kaydırma çubuğu görüntüle
 `;
 
+// Geri kalan stiller aynı şekilde kullanılabilir.
 const requiredCss = css`
   color: red;
 `;
@@ -103,12 +93,6 @@ const labelCss = css`
   display: flex;
   width: 150px;
   gap: 5px;
-`;
-
-const showPasswordCss = css`
-  position: absolute;
-  right: 7px;
-  cursor: pointer;
 `;
 
 const maxLengthCss = css`

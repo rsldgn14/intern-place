@@ -15,8 +15,10 @@
     "js-sha256": "^0.10.1",
     "next": "13.4.1",
     "react": "18.2.0",
+    "react-datepicker": "^4.24.0",
     "react-dom": "18.2.0",
     "react-fast-compare": "^3.2.2",
+    "react-time-picker": "^6.6.0",
     "tslib": "^2.3.0"
   },
   "devDependencies": {
@@ -37,7 +39,9 @@
     "@types/jest": "^29.4.0",
     "@types/node": "18.14.2",
     "@types/react": "18.2.24",
+    "@types/react-datepicker": "^4.19.4",
     "@types/react-dom": "18.2.9",
+    "@types/react-time-picker": "^6.0.0",
     "@typescript-eslint/eslint-plugin": "^5.60.1",
     "@typescript-eslint/parser": "^5.60.1",
     "babel-jest": "^29.4.1",

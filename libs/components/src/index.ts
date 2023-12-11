@@ -17,6 +17,10 @@ import { useKeyPress } from './lib/hooks/useKeyPress';
 
 import CompanyApplicationCard from './lib/company/CompanyApplicationCard';
 
+import SearchDropdown from './lib/inputs/SearchDropdown';
+
+import CreateNoticeContainer from './lib/layout/Notice/create/CreateNoticeContainer';
+
 export * from './lib/components';
 
 export { NoticeCard };
@@ -44,3 +48,7 @@ export { StudentApplicationCard };
 export { useKeyPress };
 
 export { CompanyApplicationCard };
+
+export { SearchDropdown };
+
+export { CreateNoticeContainer };

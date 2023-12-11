@@ -15,6 +15,8 @@ export interface Notice {
   EndTime: string;
   InternCount: number;
   Active: boolean;
+  SectorID: number;
+  CompanyID: number;
 }
 
 export async function getAll() {
@@ -45,5 +47,12 @@ export async function publicList(qapi?: QApis.QApi) {
 export async function publicIncreaseView(id: string | number) {
   return await request<never>(`public/notices/${id}/increase-view-count`, {
     method: 'PATCH',
+  });
+}
+
+export async function create(value: Notice) {
+  return await request<never>(`companies/notices`, {
+    method: 'POST',
+    body: JSON.stringify(value),
   });
 }
