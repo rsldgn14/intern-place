@@ -64,6 +64,7 @@ const textareaCss = css`
   //modern textarea css
   display: block;
   width: 100%;
+  resize: none;
   padding: 0.375rem 0.75rem;
   font-size: 1rem;
   font-weight: 400;

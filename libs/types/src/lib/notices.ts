@@ -51,6 +51,19 @@ export async function update(id: string | number, value: Notice) {
   });
 }
 
+export async function companyUpdate(id: string | number, value: Notice) {
+  return await request<Notice>(`companies/notices/${id}`, {
+    method: 'POST',
+    body: JSON.stringify(value),
+  });
+}
+
+export async function del(noticeID: number | string) {
+  return await request<never>(`companies/notices/${noticeID}`, {
+    method: 'DELETE',
+  });
+}
+
 export async function publicList(qapi?: QApis.QApi) {
   return await request<Notice[]>(`public/notices${QApis.toQueryParam(qapi)}`, {
     method: 'GET',

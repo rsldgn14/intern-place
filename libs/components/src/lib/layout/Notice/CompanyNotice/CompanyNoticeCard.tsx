@@ -34,6 +34,16 @@ export default function CompanyNoticeCard(props: Props) {
       });
   }, [props.notice.ID, router]);
 
+  const onDelete = useCallback(() => {
+    Notices.del(props.notice.ID)
+      .then((res) => {
+        router.reload();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [props.notice.ID, router]);
+
   return (
     <div css={containerCss}>
       <img
@@ -80,8 +90,15 @@ export default function CompanyNoticeCard(props: Props) {
             />
           )}
 
-          <Button size="small" variant="secondary" title="Güncelle" />
-          <Button size="small" danger title="Sil" />
+          <Button
+            onClick={() =>
+              router.push(`/company/notices/edit/${props.notice.ID}`)
+            }
+            size="small"
+            variant="secondary"
+            title="Güncelle"
+          />
+          <Button onClick={onDelete} size="small" danger title="Sil" />
         </div>
       </div>
     </div>

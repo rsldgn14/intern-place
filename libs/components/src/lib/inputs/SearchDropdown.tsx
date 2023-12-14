@@ -66,12 +66,13 @@ interface Option {
 }
 
 interface Props {
-  options: Option[];
+  options?: Option[];
   onChange: (selectedOption: Option) => void;
   iconSrc?: string;
   label?: string;
   placeholder?: string;
   title?: string;
+  value?: string | number;
 }
 
 const containerCss = css`
@@ -84,9 +85,11 @@ export default function SearchDropdown(props: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
 
-  const filteredOptions = props.options.filter((option) =>
+  const filteredOptions = props.options?.filter((option) =>
     option.label.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  console.log('value', props.value);
 
   const ref = useClickOutside(() => setIsOpen(false));
 
@@ -119,12 +122,16 @@ export default function SearchDropdown(props: Props) {
           onChange={onChangeInput}
         />
         <DropdownButton onClick={() => setIsOpen(!isOpen)}>
-          {selectedOption ? selectedOption.label : props.label}
+          {props.value && selectedOption === null
+            ? props.value
+            : selectedOption
+            ? selectedOption.label
+            : props.label}
         </DropdownButton>
 
         {isOpen && (
           <DropdownList>
-            {filteredOptions.map((option) => (
+            {filteredOptions?.map((option) => (
               <DropdownItem
                 key={option.value}
                 onClick={() => handleSelect(option)}

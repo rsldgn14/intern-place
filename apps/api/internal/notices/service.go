@@ -1,6 +1,8 @@
 package notices
 
 import (
+	"context"
+
 	"github.com/gofiber/fiber/v2"
 	"gitlab.com/sincap/sincap-common/services"
 )
@@ -9,6 +11,8 @@ type Service interface {
 	services.Service[Notice]
 	ReadNoticeWithPreloads(id uint) (*Notice, error)
 	IncreaseViewCount(noticeID uint) error
+	CreateNotice(ctx context.Context, notice *Notice) error
+	UpdateNotice(notice *Notice) error
 	MyNotices(companyID uint) ([]Notice, error)
 	Approve(noticeID uint) error
 	Reject(noticeID uint) error
@@ -48,6 +52,51 @@ func (s service) IncreaseViewCount(noticeID uint) error {
 
 	return nil
 }
+
+func (s service) CreateNotice(ctx context.Context, notice *Notice) error {
+
+	if notice.EndTime.Before(*notice.StartTime) {
+		return services.NewError(fiber.StatusBadRequest,"Start time must be before end time")
+	}
+
+
+	if err := s.Create(ctx, notice); err != nil {
+		return err
+
+	}
+
+	return nil
+}
+
+
+func (s service) UpdateNotice(notice *Notice) error {
+	var currentNotice Notice
+
+
+	if notice.EndTime.Before(*notice.StartTime) {
+		return services.NewError(fiber.StatusBadRequest,"Start time must be before end time")
+	}
+
+	if err := s.repository.Read(&currentNotice, notice.ID); err != nil {
+		return err
+	}
+
+	notice.CreatedAt = currentNotice.CreatedAt
+	notice.Status = DRAFT
+	notice.ViewCount = currentNotice.ViewCount
+	notice.Published = false
+	notice.CompanyID = currentNotice.CompanyID
+
+	if err := s.repository.Update(notice); err != nil {
+		return err
+	}
+
+
+
+	
+	return nil
+}	
+	
 
 
 func (s service) MyNotices(companyID uint) ([]Notice, error) {

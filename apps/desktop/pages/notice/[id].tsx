@@ -13,7 +13,9 @@ export default function Index(props: Props) {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const id = context.params?.id;
 
-  const notice = await Notices.get(id as string);
+  const notice = await Notices.get(id as string) as Notices.Notice;
+
+  
 
   return {
     props: {

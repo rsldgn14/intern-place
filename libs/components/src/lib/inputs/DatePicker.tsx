@@ -1,7 +1,9 @@
 import { css } from '@emotion/react';
 import React from 'react';
-import DatePicker from 'react-datepicker';
+import DatePicker, { registerLocale } from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import tr from "date-fns/locale/tr"; // the locale you want
+registerLocale("tr", tr)
 
 interface DatePickerProps {
   selectedDate: Date | null;
@@ -20,10 +22,11 @@ const DatePickerComponent: React.FC<DatePickerProps> = ({
       <DatePicker
         placeholderText="Tarih Seçiniz"
         css={datePickerCss}
+        locale={"tr"}
         showTimeInput
         selected={selectedDate}
         onChange={(date: Date | null) => onDateChange(date)}
-        dateFormat="yyyy-MM-dd"
+        dateFormat="yyyy-MM-dd hh:mm:ss"
         timeInputLabel="Tarih Seçiniz"
         onKeyDown={(e) => {
           e.preventDefault();
@@ -40,7 +43,7 @@ const datePickerCss = css`
   padding: 10px 0;
   font-size: 1rem;
   text-align: center;
-  width: 150px;
+  width: 200px;
   border-radius: 5px;
 `;
 

@@ -5,7 +5,7 @@ import Image from 'next/image';
 interface Props {
   label?: string;
   type: string;
-  value?: string;
+  value?: string | number;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
   disabled?: boolean;
@@ -22,6 +22,7 @@ export default function Input(props: Props) {
   useEffect(() => {
     if (
       props.maxLength &&
+      typeof props.value === 'string' &&
       props.value &&
       props.value?.length > props.maxLength
     ) {
@@ -63,7 +64,7 @@ export default function Input(props: Props) {
           onClick={() => setShowPassWord(!showPassWord)}
         />
       )}
-      {props.maxLength && (
+      {props.maxLength && typeof props.value === 'string' && (
         <span css={maxLengthCss}>
           {props.value?.length}/{props.maxLength}
         </span>

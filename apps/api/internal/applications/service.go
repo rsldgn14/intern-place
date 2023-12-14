@@ -50,10 +50,10 @@ func (s service) GetCompanyApplications(companyID uint) ([]Application, error) {
 
 
 func (s service) Approve(appID ,companyID uint) error {
-	var app *Application
+	var app Application
 
 
-	if err := s.repository.Read(app,appID);err != nil {
+	if err := s.repository.Read(&app,appID);err != nil {
 		return err
 	}
 

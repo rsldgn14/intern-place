@@ -8,6 +8,7 @@ import {
   Header,
   StudentApplicationContext,
 } from '@intern-place/components';
+import { css } from '@emotion/react';
 
 const roboto = Roboto({ subsets: ['latin'], weight: ['400', '700'] });
 
@@ -21,7 +22,10 @@ function CustomApp({ Component, pageProps }: AppProps) {
         <AuthContext.AuthProvider>
           <StudentApplicationContext.StudentApplicationProvider>
             <Header />
-            <Component {...pageProps} />
+            <div css={contentCss}>
+              <Component {...pageProps} />
+            </div>
+
             <Footer />
           </StudentApplicationContext.StudentApplicationProvider>
         </AuthContext.AuthProvider>
@@ -31,3 +35,7 @@ function CustomApp({ Component, pageProps }: AppProps) {
 }
 
 export default CustomApp;
+
+const contentCss = css`
+  min-height: calc(100vh - 100px);
+`;

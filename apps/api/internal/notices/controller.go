@@ -18,7 +18,7 @@ func NoticeAdminController(r fiber.Router, s Service) {
 	res := controller{s}
 	r.Get("/", middlewares.QApi, res.list)
 	r.Get("/:nid", res.read)
-	r.Post("/:nid", middlewares.BodyParserMap("body"), middlewares.ValidatorMap("body", Notice{}), res.update)
+	r.Post("/:nid", middlewares.BodyParser[Notice]("body"), middlewares.Validator("body"), res.update)
 	r.Patch("/:nid/approve", res.approve)
 	r.Patch("/:nid/reject", res.reject)
 }
@@ -26,6 +26,8 @@ func NoticeAdminController(r fiber.Router, s Service) {
 func NoticeCompanyController(r fiber.Router, s Service) {
 	res := controller{s}
 	r.Post("/", middlewares.BodyParser[Notice]("body"), middlewares.Validator("body"), res.create)
+	r.Post("/:nid", middlewares.BodyParser[Notice]("body"), middlewares.Validator("body"), res.update)
+	r.Delete("/:nid", res.delete)
 	r.Get("/mine", middlewares.QApi, res.myNotices)
 	r.Patch("/:nid/publish", res.publish)
 	r.Patch("/:nid/unpublish", res.unPublish)
@@ -46,13 +48,13 @@ func (res *controller) create(ctx *fiber.Ctx) error {
 	companyID,ok := claims.Extra["CompanyID"].(float64)
 
 	if !ok {
-		return fiber.NewError(http.StatusNotFound, "Student id not found")
+		return fiber.NewError(http.StatusNotFound, "Company id not found")
 
 	}
 
 	body.CompanyID = uint(companyID)
 
-	if err := res.service.Create(ctx.UserContext(), body); err != nil {
+	if err := res.service.CreateNotice(ctx.UserContext(), body); err != nil {
 		return err
 
 	}	
@@ -105,9 +107,11 @@ func (res *controller) update(ctx *fiber.Ctx) error {
 		return err
 	}
 
-	body := ctx.Locals("body").(*map[string]interface{})
+	body := ctx.Locals("body").(*Notice)
 
-	if err := res.service.Update(ctx.UserContext(), "Notice", uint(stid), *body); err != nil {
+	body.ID = uint(stid)
+
+	if err := res.service.UpdateNotice(body); err != nil {
 		return err
 	}
 
@@ -210,6 +214,22 @@ func (res *controller) unPublish(ctx *fiber.Ctx) error {
 	}
 
 	if err := res.service.Unpublish(uint(stid)); err != nil {
+		return err
+	}
+
+	return ctx.SendStatus(fiber.StatusNoContent)
+
+}
+
+func (res *controller) delete(ctx *fiber.Ctx) error {
+	stid, err := ctx.ParamsInt("nid")
+
+	if err != nil {
+
+		return err
+	}
+
+	if _,err := res.service.Delete(ctx.UserContext(),uint(stid)); err != nil {
 		return err
 	}
 

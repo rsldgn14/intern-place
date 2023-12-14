@@ -25,6 +25,8 @@ import Footer from './lib/footer/Footer';
 
 import CompanyNoticeContainer from './lib/layout/Notice/CompanyNotice/CompanyNoticeContainer';
 
+import CompanyNoticeEdit from './lib/layout/Notice/edit/CompanyNoticeEdit';
+
 export * from './lib/components';
 
 export { NoticeCard };
@@ -60,3 +62,5 @@ export { CreateNoticeContainer };
 export { Footer };
 
 export { CompanyNoticeContainer };
+
+export { CompanyNoticeEdit };

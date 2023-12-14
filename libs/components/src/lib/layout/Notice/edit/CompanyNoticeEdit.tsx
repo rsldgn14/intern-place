@@ -8,25 +8,21 @@ import Button from '../../../Button';
 import dayjs from 'dayjs';
 import { css } from '@emotion/react';
 import { useRouter } from 'next/router';
-import { error } from 'console';
 
 interface Props {
-  sectors: Sector[];
+  sectors?: Sector[];
+  notice?: Notices.Notice;
 }
 
-export default function CreateNoticeContainer(props: Props) {
+export default function CompanyNoticeEdit(props: Props) {
   const [notice, setNotice] = useState<Partial<Notices.Notice> | undefined>({
-    Title: '',
-    Description: '',
-    InternCount: 0,
-    SectorID: 0,
-    StartTime: undefined,
-    EndTime: undefined,
+    Title: props.notice?.Title,
+    Description: props.notice?.Description,
+    InternCount: props.notice?.InternCount,
+    SectorID: props.notice?.SectorID,
+    StartTime: props.notice?.StartTime,
+    EndTime: props.notice?.EndTime,
   });
-
-  useEffect(() => {
-    console.log(notice);
-  }, [notice]);
 
   const router = useRouter();
 
@@ -53,8 +49,9 @@ export default function CreateNoticeContainer(props: Props) {
       <SearchDropdown
         title="Sektör Seç"
         label="Sektör"
+        value={props.notice?.Sector?.Name}
         placeholder="Sektör ara"
-        options={props.sectors.map((sec) => {
+        options={props.sectors?.map((sec) => {
           return { label: sec.Name, value: sec.ID };
         })}
         iconSrc="/sector.svg"
@@ -81,6 +78,7 @@ export default function CreateNoticeContainer(props: Props) {
       <Input
         label="Kontenjan Sayısı"
         type={'number'}
+        value={notice?.InternCount ?? 0}
         onChange={(e: ChangeEvent<HTMLInputElement>) =>
           setNotice({ ...notice, InternCount: parseInt(e.target.value) })
         }
@@ -89,12 +87,14 @@ export default function CreateNoticeContainer(props: Props) {
         <Button
           title="Gönder"
           onClick={() => {
-            Notices.create(notice as Notices.Notice).then((res: any) => {
-              if (res.error) {
-                console.log(res.error);
-              } else {
+            Notices.update(
+              props.notice?.ID ?? 0,
+              notice as Notices.Notice
+            ).then((res: any) => {
+              if (!res?.error) {
                 router.push('/company/notices');
               }
+              console.log(res?.error);
             });
           }}
         />

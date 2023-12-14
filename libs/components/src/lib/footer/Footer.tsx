@@ -104,7 +104,7 @@ export default Footer;
 const footerStyle = css`
   padding: 40px 80px;
   width: 100%;
-  height: 270px;
+  height: 200px;
   background-color: #333;
   display: flex;
   justify-content: space-between;
@@ -173,8 +173,8 @@ const copyrightStyle = css`
   justify-content: top;
   text-align: center;
   font-size: 15px;
-  color: #888;
-  background-color: lightgrey;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.5);
   p {
     margin: 0;
   }
