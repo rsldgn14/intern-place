@@ -21,10 +21,17 @@ const secondaryStyles = (danger?: boolean) => css`
   border: 1px solid #d3bed3;
 `;
 
+const disabledCss = css`
+  background-color: gray;
+  color: #ffffff;
+  cursor: default;
+`;
+
 interface Props {
   title?: string;
   size?: 'large' | 'small' | 'medium';
   variant?: 'primary' | 'secondary';
+  disabled?: boolean;
   danger?: boolean;
   onClick?: () => void;
 }
@@ -34,6 +41,7 @@ export default function Button(props: Props) {
 
   return (
     <button
+      disabled={props.disabled}
       css={[
         buttonStyles,
         variant === 'primary' && primaryStyles(props.danger),
@@ -50,6 +58,7 @@ export default function Button(props: Props) {
           css`
             font-size: 14px;
           `,
+        props.disabled && disabledCss,
       ]}
       onClick={onClick}
     >

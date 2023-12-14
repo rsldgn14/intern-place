@@ -56,11 +56,19 @@ const columns: ColumnType<Notices.Notice>[] = [
     render: renderDateTime,
   },
   {
-    title: 'Active',
-    dataIndex: 'Active',
-    key: 'Active',
-    render: renderCheckIcon,
+    title: 'Status',
+    dataIndex: 'Status',
+    key: 'Status',
+    render: (value, record) =>
+      Notices.StatusArray.find((e) => e.ID === record.Status)?.Name,
     align: 'center',
+  },
+  {
+    title: 'Published',
+    dataIndex: 'Published',
+    align: 'center',
+    key: 'Published',
+    render: renderCheckIcon,
   },
 ];
 

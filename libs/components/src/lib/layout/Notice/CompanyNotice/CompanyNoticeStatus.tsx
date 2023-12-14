@@ -1,28 +1,28 @@
 import { css } from '@emotion/react';
-import { Applications } from '@intern-place/types';
+import { Applications, Notices } from '@intern-place/types';
 import Image from 'next/image';
 
 interface Props {
-  applicationStatus: Applications.ApplicationStatus;
+  noticeStatus: Notices.Status;
 }
 
-export default function ApplicationStatusBar(props: Props) {
-  switch (props.applicationStatus) {
-    case Applications.ApplicationStatus.WAITING:
+export default function CompanyNoticeStatus(props: Props) {
+  switch (props.noticeStatus) {
+    case Notices.Status.Draft:
       return (
         <div css={barCss}>
           <Image src="/waiting.svg" height={20} width={20} alt="waiting" />{' '}
           Beklemede
         </div>
       );
-    case Applications.ApplicationStatus.APPROVED:
+    case Notices.Status.Aprroved:
       return (
         <div css={barCss}>
           <Image src="/check.svg" height={20} width={20} alt="waiting" /> Kabul
           Edildi
         </div>
       );
-    case Applications.ApplicationStatus.REJECTED:
+    case Notices.Status.Rejected:
       return (
         <div css={barCss}>
           <Image src="/cancel.svg" height={20} width={20} alt="waiting" />{' '}

@@ -13,15 +13,15 @@ export default function Home(props: Props) {
     <div>
       <HighlightedNotices
         title="En çok ziyaret edilenler"
-        notices={props.mostVisitedNotices}
+        notices={props.mostVisitedNotices ?? []}
       />
       <HighlightedNotices
         title="En çok alım yapılanlar"
-        notices={props.mostInterCountNotices}
+        notices={props.mostInterCountNotices ?? []}
       />
       <HighlightedNotices
         title="En yeni ilanlar"
-        notices={props.newestNotices}
+        notices={props.newestNotices ?? []}
       />
     </div>
   );
@@ -31,16 +31,19 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const mostVisitedNotices = await Notices.publicList({
     limit: 5,
     sort: ['-ViewCount'],
+    filter: ['Published=true'],
   });
 
   const mostInterCountNotices = await Notices.publicList({
     limit: 5,
     sort: ['-InternCount'],
+    filter: ['Published=true'],
   });
 
   const newestNotices = await Notices.publicList({
     limit: 5,
     sort: ['-CreatedAt'],
+    filter: ['Published=true'],
   });
 
   return {

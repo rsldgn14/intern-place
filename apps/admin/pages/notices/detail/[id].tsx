@@ -5,6 +5,8 @@ import Form from '../../../components/form/Form';
 import { useCallback } from 'react';
 import dayjs from 'dayjs';
 import { renderCheckIcon } from '../../../utils/render';
+import { Button } from 'antd';
+import { useRouter } from 'next/router';
 
 interface Props {
   notice: Notices.Notice;
@@ -65,14 +67,25 @@ const columns: ColumnType<Notices.Notice>[] = [
     description: true,
   },
   {
-    title: 'Active',
-    key: 'Active',
+    title: 'Status',
+    key: 'Status',
+    description: true,
+    render: (value, record) => {
+      console.log(value);
+      return Notices.StatusArray.find((e) => e.ID === value)?.Name;
+    },
+  },
+  {
+    title: 'Published',
+    key: 'Published',
     description: true,
     render: renderCheckIcon,
   },
 ];
 
 export default function Index(props: Props) {
+  const router = useRouter();
+
   const onSubmit = useCallback(
     (value: any) => {
       value.StartTime = dayjs(value.StartTime).format(
@@ -84,8 +97,53 @@ export default function Index(props: Props) {
     [props.notice.ID]
   );
 
+  const onApprove = useCallback(() => {
+    Notices.approve(props.notice.ID)
+      .then(() => {
+        router.back();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [props.notice.ID, router]);
+
+  const onReject = useCallback(() => {
+    Notices.reject(props.notice.ID)
+      .then(() => {
+        router.back();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [props.notice.ID, router]);
+
   return (
-    <Form initialValues={props.notice} items={columns} onSubmit={onSubmit} />
+    <>
+      <Form
+        initialValues={props.notice}
+        items={columns}
+        onSubmit={onSubmit}
+        customButtons={[
+          <Button
+            onClick={onApprove}
+            disabled={props.notice.Status === Notices.Status.Aprroved}
+            key={'Approve'}
+            type="primary"
+          >
+            Approve
+          </Button>,
+          <Button
+            onClick={onReject}
+            danger
+            disabled={props.notice.Status === Notices.Status.Rejected}
+            key={'Reject'}
+            type="primary"
+          >
+            Reject
+          </Button>,
+        ]}
+      />
+    </>
   );
 }
 

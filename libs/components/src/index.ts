@@ -21,6 +21,10 @@ import SearchDropdown from './lib/inputs/SearchDropdown';
 
 import CreateNoticeContainer from './lib/layout/Notice/create/CreateNoticeContainer';
 
+import Footer from './lib/footer/Footer';
+
+import CompanyNoticeContainer from './lib/layout/Notice/CompanyNotice/CompanyNoticeContainer';
+
 export * from './lib/components';
 
 export { NoticeCard };
@@ -52,3 +56,7 @@ export { CompanyApplicationCard };
 export { SearchDropdown };
 
 export { CreateNoticeContainer };
+
+export { Footer };
+
+export { CompanyNoticeContainer };

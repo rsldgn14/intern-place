@@ -20,6 +20,15 @@ type Notice struct {
 	StartTime   *time.Time `validate:"required"`
 	EndTime     *time.Time `validate:"required"`
 	InternCount int  `validate:"required"`
-	Active      bool `gorm:"default:false"`
+	Status      uint `gorm:"default:0"`
+	Published   bool `gorm:"default:false"`
 	ViewCount   uint  `gorm:"default:0"`
 }
+
+
+
+const (
+	DRAFT uint = iota
+	APPROVED
+	REJECTED
+)

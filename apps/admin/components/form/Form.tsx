@@ -16,6 +16,7 @@ interface Props<R extends object> extends FormProps {
   items: ColumnType<R>[];
   onSubmit?: (values: Record<string, unknown>) => void;
   onDelete?: () => void;
+  customButtons?: React.ReactNode[];
 }
 
 export default function Form<R extends object>(props: Props<R>) {
@@ -108,6 +109,11 @@ export default function Form<R extends object>(props: Props<R>) {
               Save
             </Button>
           )}
+
+          {props.customButtons &&
+            props.customButtons.map((button, i) => {
+              return button;
+            })}
         </div>
       </AForm>
     </div>

@@ -44,15 +44,15 @@ const contentCss = css`
 
 const titleCss = css`
   padding: 0 20px;
-    font-size: 24px;
-    font-weight: 600;
+  font-size: 24px;
+  font-weight: 600;
 `;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const id = context.params?.id;
 
   const notices = await Notices.publicList({
-    filter: [`SectorID=${id}`],
+    filter: [`SectorID=${id}`, 'Published=true'],
   });
 
   return {

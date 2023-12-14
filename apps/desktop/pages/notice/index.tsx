@@ -25,7 +25,9 @@ export default function Index(props: Props) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const notices = await Notices.publicList();
+  const notices = await Notices.publicList({
+    filter: ['Published=true'],
+  });
   const sectors = await Sectors.publicGetAllSectors();
 
   return {

@@ -4,6 +4,7 @@ import './styles.css';
 import { Roboto } from 'next/font/google';
 import {
   AuthContext,
+  Footer,
   Header,
   StudentApplicationContext,
 } from '@intern-place/components';
@@ -21,6 +22,7 @@ function CustomApp({ Component, pageProps }: AppProps) {
           <StudentApplicationContext.StudentApplicationProvider>
             <Header />
             <Component {...pageProps} />
+            <Footer />
           </StudentApplicationContext.StudentApplicationProvider>
         </AuthContext.AuthProvider>
       </main>

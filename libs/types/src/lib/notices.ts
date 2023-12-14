@@ -14,10 +14,23 @@ export interface Notice {
   StartTime: string;
   EndTime: string;
   InternCount: number;
-  Active: boolean;
+  Status: number;
   SectorID: number;
   CompanyID: number;
+  Published: boolean;
 }
+
+export enum Status {
+  Draft,
+  Aprroved,
+  Rejected,
+}
+
+export const StatusArray = [
+  { ID: Status.Draft, Name: 'Draft' },
+  { ID: Status.Aprroved, Name: 'Aprroved' },
+  { ID: Status.Rejected, Name: 'Rejected' },
+];
 
 export async function getAll() {
   return await request('admin/notices', {
@@ -54,5 +67,39 @@ export async function create(value: Notice) {
   return await request<never>(`companies/notices`, {
     method: 'POST',
     body: JSON.stringify(value),
+  });
+}
+
+export async function mine(options?: RequestInit, qapi?: QApis.QApi) {
+  return await request<Notice[]>(
+    `companies/notices/mine${QApis.toQueryParam(qapi)}`,
+    {
+      method: 'GET',
+      ...options,
+    }
+  );
+}
+
+export async function approve(noticeID: number) {
+  return await request<Notice[]>(`admin/notices/${noticeID}/approve`, {
+    method: 'PATCH',
+  });
+}
+
+export async function reject(noticeID: number) {
+  return await request<Notice[]>(`admin/notices/${noticeID}/reject`, {
+    method: 'PATCH',
+  });
+}
+
+export async function publish(noticeID: number) {
+  return await request<Notice[]>(`companies/notices/${noticeID}/publish`, {
+    method: 'PATCH',
+  });
+}
+
+export async function unpublish(noticeID: number) {
+  return await request<Notice[]>(`companies/notices/${noticeID}/unpublish`, {
+    method: 'PATCH',
   });
 }

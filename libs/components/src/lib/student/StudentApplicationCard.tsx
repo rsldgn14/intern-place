@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import { Applications, Utils } from '@intern-place/types';
 import Image from 'next/image';
-import StatusBar from '../ApplicationStatusBar';
+import ApplicationStatusBar from '../ApplicationStatusBar';
 import { useRouter } from 'next/router';
 
 interface Props {
@@ -45,7 +45,7 @@ export default function StudentApplicationCard(props: Props) {
         <span>
           Başvuru Tarihi : {Utils.renderDateTime(props.application.CreatedAt)}
         </span>
-        <StatusBar applicationStatus={props.application.Status} />
+        <ApplicationStatusBar applicationStatus={props.application.Status} />
       </div>
     </div>
   );

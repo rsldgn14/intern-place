@@ -1,6 +1,9 @@
 package applications
 
-import "gitlab.com/sincap/sincap-common/services"
+import (
+	"github.com/gofiber/fiber/v2"
+	"gitlab.com/sincap/sincap-common/services"
+)
 
 type Service interface {
 	services.Service[Application]
@@ -47,6 +50,18 @@ func (s service) GetCompanyApplications(companyID uint) ([]Application, error) {
 
 
 func (s service) Approve(appID ,companyID uint) error {
+	var app *Application
+
+
+	if err := s.repository.Read(app,appID);err != nil {
+		return err
+	}
+
+	if app.Status != WAITING {
+		return services.NewError(fiber.StatusBadRequest,"Başvuru zaten onaylanmış veya reddedilmiş")
+	}
+	
+
 	return s.repository.Approve(appID,companyID)
 }
 

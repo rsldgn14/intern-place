@@ -13,7 +13,7 @@ export default function HighlightedNotices(props: Props) {
       <span css={titleCss}>{props.title}</span>
 
       <div css={noticeContainerCss}>
-        {props.notices.map((notice) => (
+        {props.notices?.map((notice) => (
           <NoticeCard notice={notice} key={notice.ID} />
         ))}
       </div>
