@@ -1,10 +1,18 @@
 import { request } from './fetch';
-import { User } from './users';
+import { User, Role } from './users';
 
 export interface LoginReq {
   Username: string;
   Password: string;
   token?: string;
+}
+
+export interface RegisterReq {
+  Username: string;
+  FirstName: string;
+  LastName: string;
+  Role: Role;
+  Password: string;
 }
 
 export interface AuthContextProps {
@@ -32,5 +40,12 @@ export async function auth(body: LoginReq) {
 export async function logout() {
   return await request('public/auth/logout', {
     method: 'GET',
+  });
+}
+
+export async function register(body: RegisterReq) {
+  return await request<never>('public/auth/register', {
+    method: 'POST',
+    body: JSON.stringify(body),
   });
 }

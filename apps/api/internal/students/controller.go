@@ -83,9 +83,9 @@ func (res *controller) update(ctx *fiber.Ctx) error {
 func (res *controller) useMe(ctx *fiber.Ctx) error {
 	claims := ctx.Locals("claims").(*claims.DecryptedClaims)
 
-	student := claims.Extra["Student"].(*Student)
+	studentID := claims.Extra["StudentID"].(float64)
 
-	result,err := res.service.Read(ctx.UserContext(),student.ID);
+	result,err := res.service.Read(ctx.UserContext(),uint(studentID));
 
 	if err != nil {
 		return err

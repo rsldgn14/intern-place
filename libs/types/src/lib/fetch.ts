@@ -15,8 +15,9 @@ export async function request<Data>(requestUrl: string, init?: RequestInit) {
 
   if (!response.ok) {
     // Hata durumunda JSON yerine error ve status bilgisi içeren nesne döndür
+    console.error('hata var');
     return {
-      error: await response.text(),
+      error: await response.json(),
       status: response.status,
     };
   }

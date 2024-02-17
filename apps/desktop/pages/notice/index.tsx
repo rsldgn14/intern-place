@@ -19,6 +19,7 @@ export default function Index(props: Props) {
             (notice) => notice.Sector.ID === sector.ID
           )}
         />
+        
       ))}
     </div>
   );

@@ -47,3 +47,10 @@ export async function studentApplications(options?: RequestInit) {
     ...options,
   });
 }
+
+export async function me(options?: RequestInit) {
+  return await request(`students/students/useMe`, {
+    method: 'GET',
+    ...options,
+  });
+}

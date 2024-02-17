@@ -27,6 +27,8 @@ import CompanyNoticeContainer from './lib/layout/Notice/CompanyNotice/CompanyNot
 
 import CompanyNoticeEdit from './lib/layout/Notice/edit/CompanyNoticeEdit';
 
+import ProfileContainer  from './lib/layout/Profile/Container';
+
 export * from './lib/components';
 
 export { NoticeCard };
@@ -64,3 +66,5 @@ export { Footer };
 export { CompanyNoticeContainer };
 
 export { CompanyNoticeEdit };
+
+export {ProfileContainer}

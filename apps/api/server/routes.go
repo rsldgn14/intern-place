@@ -28,6 +28,7 @@ func authenticatedRoutes(r fiber.Router) {
 	adminRoutes(r)
 	studentRoutes(r)
 	companyRoutes(r)
+	userRoutes(r)
 
 }
 
@@ -62,4 +63,11 @@ func companyRoutes(r fiber.Router) {
 	applications.ApplicationCompanyController(company.Group("/applications"), applications.ApplicationService(applications.ApplicationRepository(db.DB())))
 	companies.CompanyController(company, companies.CompanyService(companies.CompanyRepository((db.DB()))))
 	notices.NoticeCompanyController(company.Group("/notices"), notices.NoticeService(notices.NoticeRepository(db.DB())))
+}
+
+
+func userRoutes(r fiber.Router) {
+	user := r.Group("/users").Use(jwt.JWT()...)
+	user.Use(auth.Authenticator(auth.AuthRepository(db.DB()),roles.STUDENT,roles.COMPANY,roles.ADMIN))
+	users.UserController(user, users.UserService(users.UserRepository(db.DB())))
 }

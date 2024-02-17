@@ -17,6 +17,6 @@ type Role int
 
 const (
 	ADMIN = iota + 1
-	STUDENT
 	COMPANY
+	STUDENT
 )
