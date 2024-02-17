@@ -16,12 +16,14 @@ import (
 
 type Service interface {
 	Login(ctx context.Context, req *LoginReq, userAgent, ip string) (*users.User, *claims.EncryptedClaims, error)
+	Register(ctx context.Context, req *RegisterReq, userAgent, ip string) (*users.User, error)
 }
 type service struct {
 	repository  Repository
 	usersRepo   users.Repository
 	studentRepo students.Repository
 	companyRepo companies.Repository
+	
 }
 
 func AuthService(r Repository,
@@ -95,4 +97,54 @@ func fillExtras(u *users.User, ser *service, tx users.Repository) (map[string]in
 	
 	}
 	return claimsExtras, nil
+}
+
+
+func (ser *service) Register(ctx context.Context, req *RegisterReq, userAgent, ip string) (*users.User, error) {
+	tx, err := ser.usersRepo.BeginTx(ctx)
+	if err != nil {
+		return nil, fiber.NewError(fiber.StatusInternalServerError, err.Error())
+	}
+
+	u := users.User{
+		UserName:  req.Username,
+		FirstName: req.FirstName,
+		LastName:  req.LastName,
+		RoleID:    users.Role(req.Role),
+		Password:  req.Password,
+	}
+
+
+	if _,err := tx.FindByUsername(u.UserName); err == nil {
+		tx.RollbackTx()
+		return nil, fiber.NewError(400, "Bu email adresi zaten kullanımda")
+	}
+
+	err = ser.usersRepo.Create(&u)
+	if err != nil {
+		tx.RollbackTx()
+		return nil, fiber.NewError(fiber.StatusInternalServerError, err.Error())
+	}
+
+	if req.Role == users.STUDENT {
+		student := students.Student{
+			UserID: u.ID,
+		}
+		err = ser.studentRepo.Create(&student)
+		if err != nil {
+			tx.RollbackTx()
+			return nil, fiber.NewError(fiber.StatusInternalServerError, err.Error())
+		}
+	}else if req.Role == users.COMPANY {
+		company := companies.Company{
+			UserID: u.ID,
+		}
+		err = ser.companyRepo.Create(&company)
+		if err != nil {
+			tx.RollbackTx()
+			return nil, fiber.NewError(fiber.StatusInternalServerError, err.Error())
+		}
+	}
+	tx.CommitTx()
+	return &u, nil
 }

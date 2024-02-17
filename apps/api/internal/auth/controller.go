@@ -21,6 +21,7 @@ func AuthController(r fiber.Router, s Service) {
 	res := controller{s}
 	r.Post("/", middlewares.BodyParser[LoginReq]("auth"), res.login)
 	r.Get("/logout", res.logout)
+	r.Post("/register", middlewares.BodyParser[RegisterReq]("auth"),middlewares.Validator("auth"), res.Register)
 }
 
 // login godoc
@@ -45,6 +46,22 @@ func (rs *controller) login(ctx *fiber.Ctx) error {
 		return ctx.SendStatus(fiber.StatusInternalServerError)
 	}
 	return ctx.JSON(u)
+}
+
+
+func (rs *controller) Register(ctx *fiber.Ctx) error {
+	req := ctx.Locals("auth").(*RegisterReq)
+
+	userAgent := ctx.Get("User-Agent")
+	ip := net.ReadUserIP(ctx)
+
+	_, err := rs.service.Register(ctx.UserContext(), req, userAgent, ip)
+	if err != nil {
+		return err
+	}
+
+
+	return ctx.SendStatus(fiber.StatusNoContent)
 }
 
 func (rs *controller) logout(ctx *fiber.Ctx) error {

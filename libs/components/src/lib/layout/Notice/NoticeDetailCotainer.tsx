@@ -7,6 +7,7 @@ import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../contexts/AuthContext';
 import { StudentApplicationContext } from '../../contexts/StudentApplicationContext';
 import { useRouter } from 'next/router';
+import SectorInfo from '../../SectorInfo';
 
 interface Props {
   notice: Notices.Notice | null;
@@ -35,6 +36,11 @@ export default function NoticeDetailContainer(props: Props) {
         <div css={pageTitleCss}> Şirket Detayı </div>
         <NoticeCompanyArea company={props.notice?.Company} />
         <div css={pageTitleCss}> Başvuru Detayı </div>
+        <SectorInfo
+              title={props.notice?.Sector?.Name ?? ''}
+              directLink={`sectors/${props.notice?.Sector.ID}`}
+              color="rgba(60, 80, 100, 0.4)"/>
+              
         <NoticeInformationArea notice={props.notice} />
         {authCtx.user?.RoleID === Users.Role.STUDENT && !hasApplication && (
           <div

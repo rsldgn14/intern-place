@@ -114,7 +114,7 @@ export default function Header() {
           </div>
         ) : (
           <div css={menuCss}>
-            <div>
+            <div onClick={() => router.push('/profile')}>
               {authContext.user.FirstName + ' ' + authContext.user.LastName}
             </div>
             <div
