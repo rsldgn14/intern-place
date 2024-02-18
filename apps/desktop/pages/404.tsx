@@ -1,6 +1,7 @@
 import React from 'react';
 import { css, keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
+import Image from 'next/image';
 
 const Container = styled.div`
   height: 50vh;
@@ -11,6 +12,7 @@ const Container = styled.div`
   justify-content: center;
   flex-direction: column;
   overflow: hidden;
+  background-image: url('/404.webp');
 `;
 
 const fallingAnimation = (positionX: string, positionY: string) => keyframes`
@@ -42,11 +44,16 @@ const capeCss = css`
   height: 100%;
 `;
 
-
 const NotFoundPage: React.FC = () => {
   const capsPosition = [
-    { x: Math.floor(Math.random() * 1300), y: Math.floor(Math.random() * 1300) },
-    { x: Math.floor(Math.random() * 1400), y: Math.floor(Math.random() * 1300) },
+    {
+      x: Math.floor(Math.random() * 1300),
+      y: Math.floor(Math.random() * 1300),
+    },
+    {
+      x: Math.floor(Math.random() * 1400),
+      y: Math.floor(Math.random() * 1300),
+    },
     { x: Math.floor(Math.random() * 500), y: Math.floor(Math.random() * 1300) },
     { x: Math.floor(Math.random() * 600), y: Math.floor(Math.random() * 1300) },
     { x: Math.floor(Math.random() * 700), y: Math.floor(Math.random() * 1300) },
@@ -57,35 +64,43 @@ const NotFoundPage: React.FC = () => {
   ];
 
   return (
-    <Container>
-      <h1
-        css={css`
-          color: var(--title-color);
-        `}
-      >
-        404 Not Found
-      </h1>
-      <div css={capeCss}>
-        {capsPosition.map((pos, key) => (
-          <FallingImage
-            positionX={`${pos.x}`}
-            positionY={`   ${pos.y}`}
-            key={key}
-            src="/cape.svg"
-            alt="Falling Image"
-          />
-        ))}
-      </div>
+    // <Container>
+    //   <h1
+    //     css={css`
+    //       color: var(--title-color);
+    //     `}
+    //   >
+    //     404 Not Found
+    //   </h1>
+    //   <div css={capeCss}>
+    //     {capsPosition.map((pos, key) => (
+    //       <FallingImage
+    //         positionX={`${pos.x}`}
+    //         positionY={`   ${pos.y}`}
+    //         key={key}
+    //         src="/cape.svg"
+    //         alt="Falling Image"
+    //       />
+    //     ))}
+    //   </div>
 
-      <p
-        css={css`
-          color: var(--subtitle-color);
-        `}
-      >
-        Oops! The page you are looking for might be in another castle.
-      </p>
-    </Container>
+    //   <p
+    //     css={css`
+    //       color: var(--subtitle-color);
+    //     `}
+    //   >
+    //     Oops! The page you are looking for might be in another castle.
+    //   </p>
+    // </Container>
+    <Image css={imgCss} src="/404.webp" alt="404" width={1920} height={1080} />
   );
 };
 
 export default NotFoundPage;
+
+const imgCss = css`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+`;
