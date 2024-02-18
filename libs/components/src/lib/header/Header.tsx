@@ -19,6 +19,8 @@ export default function Header() {
 
   const authContext = useContext(AuthContext);
 
+  console.log(authContext.user);
+
   const router = useRouter();
 
   const onCloseLoginModal = useCallback(() => {

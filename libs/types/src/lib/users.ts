@@ -1,15 +1,15 @@
 import { request } from './fetch';
 
 export interface User {
-  ID: number;
-  CreatedAt: string;
-  UpdatedAt: string;
+  ID?: number;
+  CreatedAt?: string;
+  UpdatedAt?: string;
   FirstName: string;
   LastName: string;
   UserName: string;
   Description: string;
   Address: string;
-  RoleID: number;
+  RoleID?: number;
 }
 
 export enum Role {
@@ -21,6 +21,14 @@ export enum Role {
 export async function me(options?: RequestInit) {
   return await request<User>(`users/me`, {
     method: 'GET',
+    ...options,
+  });
+}
+
+export async function update(body: User, options?: RequestInit) {
+  return await request<User>(`users/update/${body.ID}`, {
+    method: 'PUT',
+    body: JSON.stringify(body),
     ...options,
   });
 }

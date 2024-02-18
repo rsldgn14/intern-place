@@ -1,16 +1,16 @@
-import { AuthContext, ProfileContainer } from '@intern-place/components';
+import { ProfileContainer } from '@intern-place/components';
 import { Companies, Company, Students, Users } from '@intern-place/types';
 import { GetServerSidePropsContext } from 'next';
-import { useContext } from 'react';
 
 interface Props {
+  user: Users.User;
   detailUser?: Company | Students.Student;
 }
 
 export default function Profile(props: Props) {
   return (
     <div>
-      <ProfileContainer detailUser={props.detailUser} />
+      <ProfileContainer user={props.user} detailUser={props.detailUser} />
     </div>
   );
 }
@@ -71,6 +71,7 @@ export const getServerSideProps = async (
   return {
     props: {
       detailUser: me || null,
+      user: user,
     },
   };
 };

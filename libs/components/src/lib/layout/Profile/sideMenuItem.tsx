@@ -1,11 +1,14 @@
 import { Users } from '@intern-place/types';
 import React from 'react';
 import UserProfile from './UserProfile';
+import ChangePassword from './ChangePassword';
+import StudentProfile from './Student/StudentProfile';
 
 export interface SideMenuItem {
   title: string;
   component: React.ReactNode;
-  icon: string;
+  icon?: string;
+  children?: SideMenuItem[];
 }
 
 export const sideMenuItem = (
@@ -15,12 +18,17 @@ export const sideMenuItem = (
   {
     title: 'Kullanıcı',
     component: <UserProfile user={user} />,
-    icon: 'user',
+    children: [
+      {
+        title: 'Şifre İşlemleri',
+        component: <ChangePassword />,
+        icon: '/down-arrow-child.svg',
+      },
+    ],
   },
   {
     title: userRole === Users.Role.STUDENT ? 'Öğrenci' : 'Şirket',
     component:
-      userRole === Users.Role.STUDENT ? <div>Öğrenci</div> : <div>Şirket</div>,
-    icon: 'user',
+      userRole === Users.Role.STUDENT ? <StudentProfile /> : <div>Şirket</div>,
   },
 ];
