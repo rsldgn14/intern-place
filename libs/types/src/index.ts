@@ -20,3 +20,5 @@ export * as Auth from './lib/auth';
 export * as Storages from './lib/storage';
 
 export * as Callback from './lib/callback';
+
+export * as Images from './lib/images'

@@ -29,6 +29,8 @@ import CompanyNoticeEdit from './lib/layout/Notice/edit/CompanyNoticeEdit';
 
 import ProfileContainer  from './lib/layout/Profile/Container';
 
+import ImageInputModal  from './lib/inputs/ImageInputModal';
+
 export * from './lib/components';
 
 export { NoticeCard };
@@ -68,3 +70,6 @@ export { CompanyNoticeContainer };
 export { CompanyNoticeEdit };
 
 export {ProfileContainer}
+
+
+export {ImageInputModal}

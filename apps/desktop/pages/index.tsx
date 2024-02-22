@@ -1,5 +1,5 @@
-import { HighlightedNotices } from '@intern-place/components';
-import { Notices } from '@intern-place/types';
+import { HighlightedNotices, ImageInputModal } from '@intern-place/components';
+import { Images, Notices } from '@intern-place/types';
 import { GetServerSideProps } from 'next';
 
 interface Props {
