@@ -28,41 +28,42 @@ export default function RegisterRoleSelect(props: Props) {
 
   return (
     <div css={containerCss}>
-      <span
+      <div
         onClick={() => onSelected(Users.Role.STUDENT)}
-        css={selectedRole === Users.Role.STUDENT && selectedCss}
+        css={selectCss(true,selectedRole === Users.Role.STUDENT )}
       >
-        Öğrenci
-      </span>
-      <span css={stickCss}></span>
-      <span
+        Öğrenci Hesabı 
+      </div>
+
+      <div
         onClick={() => onSelected(Users.Role.COMPANY)}
-        css={selectedRole === Users.Role.COMPANY && selectedCss}
+        css={ selectCss(false,selectedRole === Users.Role.COMPANY )}
       >
-        Şirket
-      </span>
+        Şirket Hesabı 
+      </div>
     </div>
   );
 }
 
-const containerCss = css`
-  border: 1px solid black;
-  background-color: #b19cad;
-  border-radius: 10px;
-  padding: 10px;
-  font-size: 16px;
-  cursor: pointer;
-`;
 
-const stickCss = css`
-  height: 100%;
-  border-left: 1px solid black;
-  margin: 0 10px;
-`;
 
-const selectedCss = css`
-  background-color: #5f5f5f;
+const selectCss= (first:boolean,selected:boolean) => css`
+  background-color: ${selected ? "#5f5f5f" : "#b19cad"};
   border-radius: 5px;
   padding: 5px;
   color: white;
+  border-radius: ${first ?"10px 0 0 10px" : "0 10px 10px 0"};
+  width:150px;
+  ${first && "border-right:2px solid black" };
+  flex:1;
+  text-align:center;
+  transition: all 1s ease-out;
+  font-size:16px;
+  cursor:pointer;
+`;
+
+const containerCss = css`
+ display:flex;
+ gap:0;
+
 `;

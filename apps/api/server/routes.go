@@ -4,6 +4,7 @@ import (
 	"intern-api/apps/api/internal/applications"
 	"intern-api/apps/api/internal/auth"
 	"intern-api/apps/api/internal/companies"
+	"intern-api/apps/api/internal/images"
 	"intern-api/apps/api/internal/notices"
 	"intern-api/apps/api/internal/roles"
 	"intern-api/apps/api/internal/sectors"
@@ -36,9 +37,10 @@ func publicRoutes(r fiber.Router) {
 	public := r.Group("/public")
 	notices.NoticePublicController(public.Group("/notices"), notices.NoticeService(notices.NoticeRepository(db.DB())))
 	sectors.SectorPublicControler(public.Group("/sectors"), sectors.SectorService(sectors.SectorRepository(db.DB())))
-	auth.AuthController(public.Group("/auth"), auth.AuthService(auth.AuthRepository(db.DB()),users.UserRepository(db.DB()),students.StudentRepository(db.DB()),companies.CompanyRepository(db.DB())))
+	auth.AuthController(public.Group("/auth"), auth.AuthService(auth.AuthRepository(db.DB()), users.UserRepository(db.DB()), students.StudentRepository(db.DB()), companies.CompanyRepository(db.DB())))
 	students.StudentPublicController(public.Group("/students"), students.StudentService(students.StudentRepository(db.DB())))
 	companies.CompanyPublicController(public.Group("/companies"), companies.CompanyService(companies.CompanyRepository((db.DB()))))
+	images.ImagePublicController(public.Group("/images"), images.ImageService(images.ImageRepository(db.DB())))
 }
 
 func adminRoutes(r fiber.Router) {
@@ -52,22 +54,21 @@ func adminRoutes(r fiber.Router) {
 
 func studentRoutes(r fiber.Router) {
 	student := r.Group("/students").Use(jwt.JWT()...)
-	student.Use(auth.Authenticator(auth.AuthRepository(db.DB()),roles.STUDENT))
+	student.Use(auth.Authenticator(auth.AuthRepository(db.DB()), roles.STUDENT))
 	students.StudentController(student.Group("/students"), students.StudentService(students.StudentRepository(db.DB())))
 	applications.ApplicationStudentController(student.Group("/applications"), applications.ApplicationService(applications.ApplicationRepository(db.DB())))
 }
 
 func companyRoutes(r fiber.Router) {
 	company := r.Group("/companies").Use(jwt.JWT()...)
-	company.Use(auth.Authenticator(auth.AuthRepository(db.DB()),roles.COMPANY))
+	company.Use(auth.Authenticator(auth.AuthRepository(db.DB()), roles.COMPANY))
 	applications.ApplicationCompanyController(company.Group("/applications"), applications.ApplicationService(applications.ApplicationRepository(db.DB())))
 	companies.CompanyController(company, companies.CompanyService(companies.CompanyRepository((db.DB()))))
 	notices.NoticeCompanyController(company.Group("/notices"), notices.NoticeService(notices.NoticeRepository(db.DB())))
 }
 
-
 func userRoutes(r fiber.Router) {
 	user := r.Group("/users").Use(jwt.JWT()...)
-	user.Use(auth.Authenticator(auth.AuthRepository(db.DB()),roles.STUDENT,roles.COMPANY,roles.ADMIN))
+	user.Use(auth.Authenticator(auth.AuthRepository(db.DB()), roles.STUDENT, roles.COMPANY, roles.ADMIN))
 	users.UserController(user, users.UserService(users.UserRepository(db.DB())))
 }

@@ -4,6 +4,7 @@ import (
 	"intern-api/apps/api/configs"
 	"intern-api/apps/api/internal/applications"
 	"intern-api/apps/api/internal/companies"
+	"intern-api/apps/api/internal/images"
 	"intern-api/apps/api/internal/notices"
 	"intern-api/apps/api/internal/roles"
 	"intern-api/apps/api/internal/sectors"
@@ -26,4 +27,5 @@ var models = []interface{}{
 	&sectors.Sector{},
 	&students.Student{},
 	&roles.Role{},
+	&images.Image{},
 }

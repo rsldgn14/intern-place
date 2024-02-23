@@ -80,7 +80,7 @@ export default function RegisterModal(props: Props) {
       <span css={stickCss}> </span>
       <div css={inputCss}>
         <span css={titleCss}>
-          Kayıt Ol <RegisterRoleSelect setSelectedRole={setSelectedRole} />
+          <span> Kayıt Ol</span> <RegisterRoleSelect setSelectedRole={setSelectedRole} />
         </span>
         <Input
           type="text"
@@ -147,6 +147,7 @@ const titleCss = css`
   font-weight: bold;
   width: 100%;
   display: flex;
+  justify-content:space-between;
   gap: 50px;
   align-items: center;
 `;
