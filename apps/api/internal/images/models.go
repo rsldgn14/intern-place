@@ -5,9 +5,9 @@ import "gorm.io/gorm"
 type Image struct {
 	gorm.Model
 	Type        string
-	OwnerID     uint
-	EntityID    uint
-	Content     []byte // Base64 kodlanmış içeriği tutmak için byte dizisi
+	OwnerID     uint `gorm:"index:idx_owner,unique"`
+	EntityID    uint `gorm:"index:idx_owner,unique"`
+	Content     []byte 
 	Title       string
 	Description string
 }

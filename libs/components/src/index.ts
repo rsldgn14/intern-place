@@ -27,9 +27,11 @@ import CompanyNoticeContainer from './lib/layout/Notice/CompanyNotice/CompanyNot
 
 import CompanyNoticeEdit from './lib/layout/Notice/edit/CompanyNoticeEdit';
 
-import ProfileContainer  from './lib/layout/Profile/Container';
+import ProfileContainer from './lib/layout/Profile/Container';
 
-import ImageInputModal  from './lib/inputs/ImageInputModal';
+import ImageInputModal from './lib/inputs/ImageInputModal';
+
+import useImageLoader from './lib/hooks/useImageLoader';
 
 export * from './lib/components';
 
@@ -69,7 +71,8 @@ export { CompanyNoticeContainer };
 
 export { CompanyNoticeEdit };
 
-export {ProfileContainer}
+export { ProfileContainer };
 
+export { useImageLoader };
 
-export {ImageInputModal}
+export { ImageInputModal };

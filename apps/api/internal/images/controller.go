@@ -21,14 +21,14 @@ func ImagePublicController(r fiber.Router, s Service) {
 	res := controller{s}
 
 	r.Post("/", middlewares.BodyParser[Image]("body"), middlewares.Validator("body"), res.create)
-	r.Get("/content/:id", res.readContent)
+	r.Get("/content/:entityid/:ownerid", res.readContent)
 }
 
 func (res *controller) create(ctx *fiber.Ctx) error {
 
 	body, _ := ctx.Locals("body").(*Image)
 
-	if err := res.service.Create(ctx.UserContext(), body); err != nil {
+	if err := res.service.CreateImage(body); err != nil {
 
 		return err
 	}
@@ -37,13 +37,23 @@ func (res *controller) create(ctx *fiber.Ctx) error {
 }
 
 func (res *controller) readContent(ctx *fiber.Ctx) error {
-	id, err := ctx.ParamsInt("id")
+	ownerid, err := ctx.ParamsInt("ownerid")
+
+	if err != nil {
+		return services.NewError(fiber.StatusNotFound, "OwnerID could not read")
+	}
+
+    entityid,err := ctx.ParamsInt("entityid")
+
+	if err != nil {
+		return services.NewError(fiber.StatusNotFound, "Entity could not read")
+	}
 
 	if err != nil {
 		return services.NewError(fiber.StatusNotFound, "Image id not found")
 	}
 
-	image, err := res.service.Read(ctx.UserContext(), uint(id))
+	image, err := res.service.ReadContent(uint(entityid),uint(ownerid))
 
 	if err != nil {
 		return err

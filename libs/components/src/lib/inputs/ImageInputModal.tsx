@@ -1,5 +1,7 @@
 import { css } from '@emotion/react';
-import  { useState } from 'react';
+import { useState } from 'react';
+import Modal from '../Modal';
+import Button from '../Button';
 
 interface ModalProps {
   isOpen: boolean;
@@ -7,32 +9,7 @@ interface ModalProps {
   onSave: (imageBase64: string) => void;
 }
 
-const modalStyle = css`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 999;
-`;
-
-const modalContentStyle = css`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 8px;
-`;
-
-interface Props {
-    isOpen: boolean;
-    onClose: () => void;
-    onSave: (imageBase64: string) => void;
-  }
-export default function ImageInputModal(props:Props){
+export default function ImageInputModal(props: ModalProps) {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
@@ -43,10 +20,8 @@ export default function ImageInputModal(props:Props){
       reader.onloadend = () => {
         setImageFile(file);
         setImagePreview(reader.result as string);
-        console.log(file)
       };
       reader.readAsDataURL(file);
-     
     }
   };
 
@@ -55,7 +30,7 @@ export default function ImageInputModal(props:Props){
       const reader = new FileReader();
       reader.onloadend = () => {
         const imageBase64 = reader.result as string;
-        props.onSave(imageBase64.split(",")[1]);
+        props.onSave(imageBase64.split(',')[1]);
         props.onClose();
       };
 
@@ -64,19 +39,65 @@ export default function ImageInputModal(props:Props){
   };
 
   return (
-    <div css={props.isOpen ? modalStyle : undefined}>
-      {props.isOpen && (
-        <div css={modalContentStyle}>
-          <button onClick={props.onClose}>Close</button>
-          <input type="file" accept="image/*" onChange={handleFileChange} />
-          {imagePreview && (
-            <div>
-              <img src={imagePreview} alt="Preview" css={{ maxWidth: '100%', maxHeight: '200px' }} />
-            </div>
-          )}
-          <button onClick={handleSave}>Save</button>
-        </div>
-      )}
-    </div>
+    <Modal show={props.isOpen} onClose={props.onClose}>
+      <div css={containerCss}>
+        <input
+          css={inputCss}
+          type="file"
+          accept="image/*"
+          onChange={handleFileChange}
+        />
+
+        {imagePreview && (
+          <div>
+            <img
+              src={imagePreview}
+              alt="Preview"
+              css={{ maxWidth: '200px', height: 'auto', marginBottom: '20px' }}
+            />
+          </div>
+        )}
+
+        <Button variant="secondary" title="Yükle" onClick={handleSave} />
+      </div>
+    </Modal>
   );
-};
+}
+
+const inputCss = css`
+  border-radius: 15px;
+`;
+const containerCss = css`
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  background: linear-gradient(
+    rgba(254, 141, 198, 0.6),
+    rgba(254, 209, 199, 0.6)
+  );
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  transition: box-shadow 0.3s ease-in-out;
+
+  input[type='file']::file-selector-button {
+    margin-right: 20px;
+    border: none;
+    background: #084cdf;
+    padding: 10px 20px;
+    border-radius: 10px;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.2s ease-in-out;
+  }
+
+  input[type='file']::file-selector-button:hover {
+    background: #0d45a5;
+    max-width: 200px;
+    max-height: 200px;
+  }
+`;

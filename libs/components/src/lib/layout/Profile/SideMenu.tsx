@@ -37,7 +37,7 @@ export default function SideMenu(props: Props) {
         {props.user?.RoleID === Users.Role.COMPANY ? 'Şirket' : 'Öğrenci'}{' '}
         Profili
       </span>
-      <AvatarImage />
+      <AvatarImage user={props.user} />
       <div css={containerCss}>
         {sideMenuItem(props.user, props?.user?.RoleID).map(
           (item: SideMenuItem) => {
