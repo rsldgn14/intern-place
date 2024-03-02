@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { Notices, Utils } from '@intern-place/types';
+import { API, Images, Notices, Utils } from '@intern-place/types';
 
 interface Props {
   notice: Notices.Notice;
@@ -11,7 +11,7 @@ export default function CardOwner(props: Props) {
       <div css={leftCss}>
         <img
           css={cardOwnerImgCss}
-          src={`https://picsum.photos/200/${props.notice.Company.ID + 350}`}
+          src={`${API}/public/images/content/${Images.EntityType.Avatar}/${props.notice.Company.UserID}`}
           alt="user-info"
         />
         <div css={cardOwnerInfoCss}>

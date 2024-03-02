@@ -35,6 +35,10 @@ import ImageInputModal from './lib/inputs/ImageInputModal';
 
 import useImageLoader from './lib/hooks/useImageLoader';
 
+import * as StudentContext from './lib/contexts/StudentContext';
+
+import * as CompanyContext from './lib/contexts/CompanyContext';
+
 export * from './lib/components';
 
 export { NoticeCard };
@@ -80,3 +84,7 @@ export { useImageLoader };
 export { ImageInputModal };
 
 export { ApplicationFilter };
+
+export { StudentContext };
+
+export { CompanyContext };

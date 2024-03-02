@@ -14,8 +14,6 @@ export async function login(
     Password: req.Password ? sha256(req.Password) : '',
   });
 
-  console.log(authResp);
-
   if (authResp.error) {
     removeAllCookies();
     removeStorage(['user']);
