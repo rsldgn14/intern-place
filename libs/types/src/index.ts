@@ -1,3 +1,5 @@
+export const API = 'http://localhost:3000/api';
+
 export * from './lib/sectors';
 export { Company, Companies } from './lib/companies';
 
@@ -21,4 +23,4 @@ export * as Storages from './lib/storage';
 
 export * as Callback from './lib/callback';
 
-export * as Images from './lib/images'
+export * as Images from './lib/images';

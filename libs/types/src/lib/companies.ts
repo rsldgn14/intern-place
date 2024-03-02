@@ -13,6 +13,7 @@ export interface Company {
   Address: string;
   Sector: Sector[];
   User: User;
+  UserID: number;
 }
 
 export async function getAll() {

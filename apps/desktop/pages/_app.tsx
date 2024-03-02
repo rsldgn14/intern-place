@@ -4,9 +4,11 @@ import './styles.css';
 import { Roboto } from 'next/font/google';
 import {
   AuthContext,
+  CompanyContext,
   Footer,
   Header,
   StudentApplicationContext,
+  StudentContext,
 } from '@intern-place/components';
 import { css } from '@emotion/react';
 
@@ -17,17 +19,25 @@ function CustomApp({ Component, pageProps }: AppProps) {
     <>
       <Head>
         <title>InternNexa</title>
+        <link
+          rel="stylesheet"
+          href="https://unpkg.com/react-quill@1.3.3/dist/quill.snow.css"
+        />
       </Head>
       <main className={roboto.className}>
         <AuthContext.AuthProvider>
-          <StudentApplicationContext.StudentApplicationProvider>
-            <Header />
-            <div css={contentCss}>
-              <Component {...pageProps} />
-            </div>
+          <StudentContext.StudentProvider>
+            <CompanyContext.CompanyProvider>
+              <StudentApplicationContext.StudentApplicationProvider>
+                <Header />
+                <div css={contentCss}>
+                  <Component {...pageProps} />
+                </div>
 
-            <Footer />
-          </StudentApplicationContext.StudentApplicationProvider>
+                <Footer />
+              </StudentApplicationContext.StudentApplicationProvider>
+            </CompanyContext.CompanyProvider>
+          </StudentContext.StudentProvider>
         </AuthContext.AuthProvider>
       </main>
     </>

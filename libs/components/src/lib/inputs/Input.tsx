@@ -13,6 +13,7 @@ interface Props {
   name?: string;
   id?: string;
   maxLength?: number;
+  labelFit?: boolean;
 }
 
 export default function Input(props: Props) {
@@ -37,12 +38,13 @@ export default function Input(props: Props) {
   return (
     <div className="form-group" css={inputContainerCss}>
       {props.label && (
-        <label css={labelCss} htmlFor={props.id}>
+        <label css={labelCss(props.labelFit)} htmlFor={props.id}>
           {props.label} {props.required && <span css={requiredCss}>*</span>}{' '}
         </label>
       )}
 
       <input
+        autoComplete="off"
         css={inputCss}
         type={props.type === 'password' && showPassWord ? 'text' : props.type}
         className="form-control"
@@ -100,10 +102,11 @@ const inputContainerCss = css`
   position: relative;
 `;
 
-const labelCss = css`
+const labelCss = (labelFit?: boolean) => css`
   display: flex;
   width: 150px;
   gap: 5px;
+  ${labelFit && 'width: fit-content;'}
 `;
 
 const showPasswordCss = css`

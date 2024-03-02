@@ -18,5 +18,4 @@ type Student struct {
 	Experience  string
 	User        *users.User `gorm:"foreignKey:UserID"`
 	Description string
-	AvatarID    uint
 }

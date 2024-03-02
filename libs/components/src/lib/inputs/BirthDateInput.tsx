@@ -1,33 +1,44 @@
+import React, { useState } from 'react';
+import moment from 'moment';
+import InputMask from 'react-input-mask';
 import { css } from '@emotion/react';
-import { useCallback, useState } from 'react';
 
-export default function BirthDateInput() {
-  const [value, setValue] = useState<string>('');
-
-  const onChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-
-    if (value[2] !== '/') {
-      const valueArray = value.split('');
-      valueArray[2] = '/';
-      const updatedValue = valueArray.join('');
-      setValue(updatedValue);
-    }
-
-    setValue(value);
-  }, []);
-
-  return <input type="date" value={value} css={inputCss} onChange={onChange} />;
+interface Props {
+  date?: string;
+  onDateChange: (date: string) => void;
 }
 
+const MyDateInput = (props: Props) => {
+  const [date, setDate] = useState(props.date || '');
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const enteredDate = event.target.value;
+
+    setDate(enteredDate);
+    const formattedDate = moment(enteredDate, 'DD/MM/YYYY').format(
+      'YYYY-MM-DD HH:mm:ss.SSS'
+    );
+    props.onDateChange(formattedDate);
+  };
+
+  return (
+    <InputMask
+      css={inputCss}
+      mask="99/99/9999"
+      placeholder="GG/AA/YYYY"
+      value={date}
+      onChange={handleChange}
+    />
+  );
+};
+
 const inputCss = css`
-  width: 100%;
   padding: 10px;
-  border-radius: 5px;
+  font-size: 16px;
+  margin: 20px 0;
   border: 1px solid #ccc;
-  outline: none;
-  transition: 0.3s;
-  &:focus {
-    border: 1px solid #000;
-  }
+  border-radius: 5px;
+  max-width: 110px;
 `;
+
+export default MyDateInput;
