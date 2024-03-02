@@ -67,4 +67,4 @@ Nx comes with local caching already built-in (check your `nx.json`). On CI you m
 - CREATE USER 'internplace'@'localhost' IDENTIFIED BY 'intern';
 - FLUSH PRIVILEGES;
 - CREATE DATABASE internplace;
-- GRANT ALL PRIVILEGES ON bfapi.\* TO 'internplace'@'localhost';
+- GRANT ALL PRIVILEGES ON internplace.\* TO 'internplace'@'localhost';
