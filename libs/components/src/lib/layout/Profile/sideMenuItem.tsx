@@ -3,6 +3,7 @@ import React from 'react';
 import UserProfile from './UserProfile';
 import ChangePassword from './ChangePassword';
 import StudentProfile from './Student/StudentProfile';
+import CompanyProfile from './CompanyProfile';
 
 export interface SideMenuItem {
   title: string;
@@ -29,6 +30,6 @@ export const sideMenuItem = (
   {
     title: userRole === Users.Role.STUDENT ? 'Öğrenci' : 'Şirket',
     component:
-      userRole === Users.Role.STUDENT ? <StudentProfile /> : <div>Şirket</div>,
+      userRole === Users.Role.STUDENT ? <StudentProfile /> : <CompanyProfile />,
   },
 ];

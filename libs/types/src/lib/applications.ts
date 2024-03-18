@@ -16,6 +16,17 @@ export interface Application {
   Status: number;
 }
 
+export interface ApplicationFilterItemIconsItem {
+  Count: number;
+  Icon: string;
+}
+
+export interface ApplicationFilterItemIcons {
+  Approved: ApplicationFilterItemIconsItem;
+  Rejected: ApplicationFilterItemIconsItem;
+  Waiting: ApplicationFilterItemIconsItem;
+}
+
 export interface StudentApplicationContextProps {
   applications?: Application[];
 }

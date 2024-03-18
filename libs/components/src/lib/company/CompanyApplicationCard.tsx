@@ -72,7 +72,7 @@ export default function CompanyApplicationCard(props: Props) {
 }
 
 const containerCss = css`
-  height: 140px;
+  height: 160px;
   display: flex;
   background-color: #fff;
   border-radius: 5px;
