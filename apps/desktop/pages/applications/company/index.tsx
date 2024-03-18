@@ -34,6 +34,7 @@ export default function Index(props: Props) {
   return (
     <div css={bodyCss}>
       <ApplicationFilter
+        applications={props.applications}
         notices={props.notices}
         setFilteredData={(id: number) => setFilteredData(id)}
       />

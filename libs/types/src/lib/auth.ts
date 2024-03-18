@@ -16,6 +16,7 @@ export interface RegisterReq {
 }
 
 export interface AuthContextProps {
+  company: any;
   user: User | undefined;
   isAuthenticated: boolean;
 

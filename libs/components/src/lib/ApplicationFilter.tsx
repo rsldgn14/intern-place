@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { css } from '@emotion/react';
 import ApplicationFilterItem from './ApplicationFilterItem';
-import { Notices } from '@intern-place/types';
+import { Applications, Notices } from '@intern-place/types';
 
 interface Props {
   notices: Notices.Notice[];
+  applications: Applications.Application[];
   setFilteredData: (noticeID: number) => void;
 }
 
 export default function ApplicationFilter(props: Props) {
   const [notices, setNotices] = useState<Notices.Notice[]>(props.notices);
   const [searchTerm, setSearchTerm] = useState<string>('');
+
+  console.log(props.applications);
 
   useEffect(() => {
     if (searchTerm) {
@@ -36,6 +39,32 @@ export default function ApplicationFilter(props: Props) {
         {notices.map((n: Notices.Notice, index) => (
           <ApplicationFilterItem
             key={index}
+            applicationFilterItemIcons={{
+              Approved: {
+                Count: props.applications?.filter(
+                  (a) =>
+                    a.NoticeID === n.ID &&
+                    a.Status === Applications.Status.Approved
+                ).length,
+                Icon: '/check.svg',
+              },
+              Rejected: {
+                Count: props.applications?.filter(
+                  (a) =>
+                    a.NoticeID === n.ID &&
+                    a.Status === Applications.Status.Rejected
+                ).length,
+                Icon: '/cancel.svg',
+              },
+              Waiting: {
+                Count: props.applications?.filter(
+                  (a) =>
+                    a.NoticeID === n.ID &&
+                    a.Status === Applications.Status.Waiting
+                ).length,
+                Icon: '/waiting.svg',
+              },
+            }}
             title={n.Title}
             onClick={() => props.setFilteredData(n.ID)}
           />
@@ -48,6 +77,7 @@ export default function ApplicationFilter(props: Props) {
 const appContainerCss = css`
   diplay: flex;
   gap: 300px;
+  min-width: 300px;
   min-height: 500px;
 `;
 
