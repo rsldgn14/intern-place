@@ -1,11 +1,19 @@
 import { css } from '@emotion/react';
-import { Notices, Utils } from '@intern-place/types';
+import { API, Images, Notices, Utils } from '@intern-place/types';
+import useImageLoader from '../../hooks/useImageLoader';
 
 interface Props {
   notice: Notices.Notice | null;
 }
 
 export default function NoticeInformationArea(props: Props) {
+  const image = useImageLoader(
+    `${API.BACKEND_URL}/public/images/content/${Images.EntityType.Notice}/${
+      props.notice!.ID! ?? 0
+    }`,
+    'https://media.istockphoto.com/id/1147544807/tr/vekt%C3%B6r/hay%C4%B1r-k%C3%BC%C3%A7%C3%BCk-resim-vekt%C3%B6r-grafi%C4%9Fi.jpg?s=2048x2048&w=is&k=20&c=tY3WAYBvW78d65y1HKmcUV91wZjzF-MKEyL3XmFOZAg='
+  );
+
   return (
     <div css={containerCss}>
       <div css={informationCss}>
@@ -23,12 +31,7 @@ export default function NoticeInformationArea(props: Props) {
           </div>
         </div>
         <div css={imageCss}>
-          <img
-            src={`https://picsum.photos/id/${props.notice.ID + 300}/200/300`}
-            alt="notice"
-            height={300}
-            width={300}
-          />
+          <img src={image} alt="notice" height={300} width={300} />
         </div>
 
         <span
@@ -78,7 +81,7 @@ const titleCss = css`
 `;
 
 const imageCss = css`
-display: flex;
+  display: flex;
   width: 100%;
   justify-content: center;
 `;

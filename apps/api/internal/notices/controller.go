@@ -54,12 +54,14 @@ func (res *controller) create(ctx *fiber.Ctx) error {
 
 	body.CompanyID = uint(companyID)
 
-	if err := res.service.CreateNotice(ctx.UserContext(), body); err != nil {
+	n, err := res.service.CreateNotice(ctx.UserContext(), body); 
+	
+	if err != nil {
 		return err
 
 	}	
 
-	return ctx.SendStatus(fiber.StatusNoContent)
+	return ctx.Format(n)
 }
 
 func NoticePublicController(r fiber.Router, s Service) {

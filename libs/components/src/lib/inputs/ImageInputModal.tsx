@@ -7,6 +7,7 @@ interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSave: (imageBase64: string) => void;
+  getImagePreview?: (imagePreview: string) => void;
 }
 
 export default function ImageInputModal(props: ModalProps) {
@@ -31,7 +32,9 @@ export default function ImageInputModal(props: ModalProps) {
       reader.onloadend = () => {
         const imageBase64 = reader.result as string;
         props.onSave(imageBase64.split(',')[1]);
+        setImageFile(null);
         props.onClose();
+        props.getImagePreview?.(reader.result as string);
       };
 
       reader.readAsDataURL(imageFile);
