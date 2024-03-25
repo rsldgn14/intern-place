@@ -11,7 +11,7 @@ type Service interface {
 	services.Service[Notice]
 	ReadNoticeWithPreloads(id uint) (*Notice, error)
 	IncreaseViewCount(noticeID uint) error
-	CreateNotice(ctx context.Context, notice *Notice) error
+	CreateNotice(ctx context.Context, notice *Notice) (*Notice,error)
 	UpdateNotice(notice *Notice) error
 	MyNotices(companyID uint) ([]Notice, error)
 	Approve(noticeID uint) error
@@ -53,19 +53,19 @@ func (s service) IncreaseViewCount(noticeID uint) error {
 	return nil
 }
 
-func (s service) CreateNotice(ctx context.Context, notice *Notice) error {
+func (s service) CreateNotice(ctx context.Context, notice *Notice) (*Notice,error) {
 
 	if notice.EndTime.Before(*notice.StartTime) {
-		return services.NewError(fiber.StatusBadRequest,"Start time must be before end time")
+		return nil,services.NewError(fiber.StatusBadRequest,"Start time must be before end time")
 	}
 
 
 	if err := s.Create(ctx, notice); err != nil {
-		return err
+		return nil,err
 
 	}
 
-	return nil
+	return notice,nil
 }
 
 

@@ -24,3 +24,6 @@ export * as Storages from './lib/storage';
 export * as Callback from './lib/callback';
 
 export * as Images from './lib/images';
+
+export * as API from './lib/index';
+;

@@ -10,6 +10,7 @@ interface Props {
 
 export default function AvatarImage(props: Props) {
   const [open, setOpen] = useState<boolean>(false);
+  const [preview, setPrewiew] = useState<string>('');
 
   const onUpload = useCallback((imageBase64: string) => {
     Images.create({
@@ -20,9 +21,9 @@ export default function AvatarImage(props: Props) {
   }, []);
 
   const image = useImageLoader(
-    `localhost:3000/api/public/images/content/${Images.EntityType.Avatar}/${
-      props.user?.ID ?? 0
-    }`,
+    `http://localhost:3000/api/public/images/content/${
+      Images.EntityType.Avatar
+    }/${props.user?.ID ?? 0}`,
     'https://www.w3schools.com/howto/img_avatar.png'
   );
 
@@ -30,9 +31,7 @@ export default function AvatarImage(props: Props) {
     <div css={containerCss}>
       <img css={plusCss} src="/plus.svg" alt="plus" height={30} width={30} />
       <img
-        src={`http://localhost:3000/api/public/images/content/${
-          Images.EntityType.Avatar
-        }/${props.user?.ID ?? 0}`}
+        src={preview ? preview : image}
         alt="Avatar"
         css={imageCss}
         onClick={() => setOpen(true)}
@@ -41,6 +40,7 @@ export default function AvatarImage(props: Props) {
         isOpen={open}
         onClose={() => setOpen(false)}
         onSave={onUpload}
+        getImagePreview={(preview) => setPrewiew(preview)}
       />
     </div>
   );

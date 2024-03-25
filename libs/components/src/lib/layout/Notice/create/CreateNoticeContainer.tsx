@@ -1,5 +1,5 @@
-import { Notices, Sector } from '@intern-place/types';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { Images, Notices, Sector } from '@intern-place/types';
+import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import Input from '../../../inputs/Input';
 import TextArea from '../../../inputs/TextArea';
 import DatePickerComponent from '../../../inputs/DatePicker';
@@ -9,6 +9,7 @@ import dayjs from 'dayjs';
 import { css } from '@emotion/react';
 import { useRouter } from 'next/router';
 import { error } from 'console';
+import ImageInputModal from '../../../inputs/ImageInputModal';
 
 interface Props {
   sectors: Sector[];
@@ -23,12 +24,41 @@ export default function CreateNoticeContainer(props: Props) {
     StartTime: undefined,
     EndTime: undefined,
   });
+  const [imageModal, setImageModal] = useState<boolean>(false);
+  const [image, setImage] = useState<Partial<Images.Image>>({});
+  const [preview, setPreview] = useState<string>('');
+  const router = useRouter();
 
   useEffect(() => {
     console.log(notice);
   }, [notice]);
 
-  const router = useRouter();
+  const onUploadImage = useCallback((imageBase64: string) => {
+    setImage({
+      EntityID: Images.EntityType.Notice,
+      Content: imageBase64,
+    });
+  }, []);
+
+  const onSend = useCallback(() => {
+    Notices.create(notice as Notices.Notice).then((res: any) => {
+      if (res.error) {
+        console.log(res.error);
+      } else {
+        Images.create({
+          EntityID: image.EntityID,
+          Content: image.Content,
+          OwnerID: res.ID,
+        }).then((res) => {
+          if (res.error) {
+            throw new Error('Image not uploaded');
+          }
+        });
+        console.log(res);
+        router.push('/company/notices');
+      }
+    });
+  }, [image.Content, image.EntityID, notice, router]);
 
   return (
     <div css={containerCss}>
@@ -49,6 +79,17 @@ export default function CreateNoticeContainer(props: Props) {
         onChange={(e: ChangeEvent<HTMLTextAreaElement>) => {
           setNotice({ ...notice, Description: e.target.value });
         }}
+      />
+      Fotoğraf:
+      <div css={imageUploadCss}>
+        {preview && <img src={preview} height={300} width={500} alt="image" />}
+        <Button onClick={() => setImageModal(true)} title="Fotoğraf yükle" />
+      </div>
+      <ImageInputModal
+        isOpen={imageModal}
+        onClose={() => setImageModal(false)}
+        onSave={onUploadImage}
+        getImagePreview={(preview) => setPreview(preview)}
       />
       <SearchDropdown
         title="Sektör Seç"
@@ -86,18 +127,7 @@ export default function CreateNoticeContainer(props: Props) {
         }
       />
       <div>
-        <Button
-          title="Gönder"
-          onClick={() => {
-            Notices.create(notice as Notices.Notice).then((res: any) => {
-              if (res.error) {
-                console.log(res.error);
-              } else {
-                router.push('/company/notices');
-              }
-            });
-          }}
-        />
+        <Button title="Gönder" onClick={onSend} />
       </div>
     </div>
   );
@@ -120,4 +150,12 @@ const dateCSs = css`
 const titleCss = css`
   font-size: 24px;
   font-weight: 700;
+`;
+
+const imageUploadCss = css`
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  align-items: center;,
+
 `;
